@@ -1,13 +1,32 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { ExamPrepSection } from "@/components/sections/ExamPrepSection";
+import { PersonalizedLearningSection } from "@/components/sections/PersonalizedLearningSection";
+import { LiveClassesSection } from "@/components/sections/LiveClassesSection";
+import { FamilyAccountsSection } from "@/components/sections/FamilyAccountsSection";
+import { VerifiedTutorsSection } from "@/components/sections/VerifiedTutorsSection";
+import { SchedulingSection } from "@/components/sections/SchedulingSection";
+import { AdminSection } from "@/components/sections/AdminSection";
+import { BenefitsSection } from "@/components/sections/BenefitsSection";
+import { CTASection } from "@/components/sections/CTASection";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <main className="min-h-screen bg-background">
+      <Navbar />
+      <HeroSection />
+      <ExamPrepSection />
+      <PersonalizedLearningSection />
+      <LiveClassesSection />
+      <FamilyAccountsSection />
+      <VerifiedTutorsSection />
+      <SchedulingSection />
+      <AdminSection />
+      <BenefitsSection />
+      <CTASection />
+      <Footer />
+    </main>
   );
 };
 
