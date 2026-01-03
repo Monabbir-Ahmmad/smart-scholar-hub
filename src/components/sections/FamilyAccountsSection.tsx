@@ -1,183 +1,255 @@
-import { motion } from "framer-motion";
-import { SectionWrapper } from "@/components/ui/SectionWrapper";
-import { Users, CreditCard, LineChart, Bell, User } from "lucide-react";
+'use client';
+
+import { motion } from 'framer-motion';
+import {
+  Box,
+  Container,
+  Typography,
+  Grid2 as Grid,
+  Card,
+  Stack,
+  LinearProgress,
+  alpha,
+  useTheme,
+} from '@mui/material';
+import GroupIcon from '@mui/icons-material/Group';
+import PaymentIcon from '@mui/icons-material/Payment';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import PersonIcon from '@mui/icons-material/Person';
+import { SectionWrapper } from '@/components/SectionWrapper';
 
 const features = [
   {
-    icon: Users,
-    title: "Family Accounts",
-    description: "Manage multiple students under one or two parent accounts",
+    icon: GroupIcon,
+    title: 'Family Accounts',
+    description: 'Manage multiple students under one or two parent accounts',
   },
   {
-    icon: CreditCard,
-    title: "Unified Payments",
+    icon: PaymentIcon,
+    title: 'Unified Payments',
     description: "Single billing for all family members' courses and sessions",
   },
   {
-    icon: LineChart,
-    title: "Progress Tracking",
-    description: "Monitor attendance, grades, and exam results at a glance",
+    icon: TrendingUpIcon,
+    title: 'Progress Tracking',
+    description: 'Monitor attendance, grades, and exam results at a glance',
   },
   {
-    icon: Bell,
-    title: "Smart Notifications",
-    description: "Automated alerts for upcoming classes, exams, and reports",
+    icon: NotificationsIcon,
+    title: 'Smart Notifications',
+    description: 'Automated alerts for upcoming classes, exams, and reports',
   },
   {
-    icon: User,
-    title: "Solo Student Support",
-    description: "Independent students can manage their own accounts too",
+    icon: PersonIcon,
+    title: 'Solo Student Support',
+    description: 'Independent students can manage their own accounts too',
   },
 ];
 
 export const FamilyAccountsSection = () => {
+  const theme = useTheme();
+
   return (
-    <SectionWrapper id="family-accounts" className="bg-background">
-      {/* Background illustration */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-[0.04]">
-        <svg viewBox="0 0 400 300" className="w-full max-w-4xl h-auto">
-          <circle cx="200" cy="120" r="40" className="fill-primary" />
-          <circle cx="120" cy="200" r="30" className="fill-secondary" />
-          <circle cx="280" cy="200" r="30" className="fill-secondary" />
-          <path d="M200 160 L200 200 M200 200 L150 260 M200 200 L250 260" stroke="currentColor" strokeWidth="3" fill="none" />
-          <circle cx="150" cy="260" r="20" className="fill-accent" />
-          <circle cx="250" cy="260" r="20" className="fill-accent" />
-        </svg>
-      </div>
-      
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <SectionWrapper id="family-accounts">
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
+        <Grid container spacing={{ xs: 6, lg: 10 }} alignItems="center">
           {/* Content */}
-          <div>
-            <motion.span
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Typography
+              component={motion.span}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="inline-block text-sm font-semibold text-primary mb-4"
+              variant="overline"
+              color="primary"
+              fontWeight={600}
+              sx={{ display: 'block', mb: 2 }}
             >
               FAMILY & PARENT ACCOUNTS
-            </motion.span>
-            
-            <motion.h2
+            </Typography>
+
+            <Typography
+              component={motion.h2}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
+              variant="h2"
+              sx={{ fontSize: { xs: '2rem', lg: '2.5rem', xl: '3rem' }, mb: 3 }}
             >
-              Built for Students.{" "}
-              <span className="text-primary">Trusted by Parents.</span>
-            </motion.h2>
-            
-            <motion.p
+              Built for Students.{' '}
+              <Box component="span" color="primary.main">
+                Trusted by Parents.
+              </Box>
+            </Typography>
+
+            <Typography
+              component={motion.p}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-muted-foreground mb-8"
+              variant="body1"
+              color="text.secondary"
+              sx={{ mb: 4, fontSize: '1.1rem' }}
             >
-              Our family-centric platform gives parents full visibility and control 
+              Our family-centric platform gives parents full visibility and control
               while empowering students to take ownership of their education.
-            </motion.p>
-            
-            <div className="space-y-3">
+            </Typography>
+
+            <Stack spacing={1}>
               {features.map((feature, index) => (
-                <motion.div
+                <Box
                   key={feature.title}
+                  component={motion.div}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.3 + index * 0.08 }}
-                  className="flex items-center gap-4 p-3 rounded-xl hover:bg-muted/50 transition-colors duration-300"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    p: 1.5,
+                    borderRadius: 2,
+                    transition: 'background-color 0.3s',
+                    '&:hover': { bgcolor: alpha(theme.palette.grey[100], 0.5) },
+                  }}
                 >
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <feature.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">{feature.title}</h4>
-                    <p className="text-sm text-muted-foreground">{feature.description}</p>
-                  </div>
-                </motion.div>
+                  <Box
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 2,
+                      bgcolor: alpha(theme.palette.primary.main, 0.1),
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <feature.icon sx={{ color: 'primary.main', fontSize: 20 }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="subtitle2" fontWeight={600}>
+                      {feature.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {feature.description}
+                    </Typography>
+                  </Box>
+                </Box>
               ))}
-            </div>
-          </div>
-          
+            </Stack>
+          </Grid>
+
           {/* Dashboard mockup */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="relative"
-          >
-            <div className="bg-card rounded-3xl p-6 border border-border shadow-xl">
+          <Grid size={{ xs: 12, lg: 6 }}>
+            <Card
+              component={motion.div}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              sx={{ p: 3, borderRadius: 6 }}
+            >
               {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-lg font-bold text-foreground">Family Dashboard</h3>
-                  <p className="text-sm text-muted-foreground">The Johnson Family</p>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                  <Users className="w-5 h-5 text-primary-foreground" />
-                </div>
-              </div>
-              
+              <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
+                <Box>
+                  <Typography variant="h6" fontWeight={700}>
+                    Family Dashboard
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    The Johnson Family
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    bgcolor: 'primary.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <GroupIcon sx={{ color: 'white', fontSize: 20 }} />
+                </Box>
+              </Stack>
+
               {/* Family members */}
-              <div className="space-y-3 mb-6">
+              <Stack spacing={1.5} mb={3}>
                 {[
-                  { name: "Emma Johnson", role: "Student", progress: 85 },
-                  { name: "Michael Johnson", role: "Student", progress: 72 },
+                  { name: 'Emma Johnson', role: 'Student', progress: 85 },
+                  { name: 'Michael Johnson', role: 'Student', progress: 72 },
                 ].map((member, index) => (
-                  <motion.div
+                  <Card
                     key={member.name}
+                    component={motion.div}
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.5 + index * 0.1 }}
-                    className="p-4 bg-muted/50 rounded-xl"
+                    sx={{ p: 2, bgcolor: alpha(theme.palette.grey[100], 0.5), boxShadow: 0 }}
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary" />
-                        <div>
-                          <p className="font-medium text-foreground text-sm">{member.name}</p>
-                          <p className="text-xs text-muted-foreground">{member.role}</p>
-                        </div>
-                      </div>
-                      <span className="text-sm font-semibold text-primary">{member.progress}%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${member.progress}%` }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.7 + index * 0.1, duration: 0.8 }}
-                        className="h-full bg-primary rounded-full"
-                      />
-                    </div>
-                  </motion.div>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
+                      <Stack direction="row" alignItems="center" spacing={1.5}>
+                        <Box sx={{ width: 32, height: 32, borderRadius: '50%', bgcolor: 'primary.main' }} />
+                        <Box>
+                          <Typography variant="body2" fontWeight={500}>
+                            {member.name}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {member.role}
+                          </Typography>
+                        </Box>
+                      </Stack>
+                      <Typography variant="body2" fontWeight={600} color="primary.main">
+                        {member.progress}%
+                      </Typography>
+                    </Stack>
+                    <LinearProgress
+                      variant="determinate"
+                      value={member.progress}
+                      sx={{
+                        height: 8,
+                        borderRadius: 4,
+                        bgcolor: 'grey.200',
+                        '& .MuiLinearProgress-bar': { borderRadius: 4 },
+                      }}
+                    />
+                  </Card>
                 ))}
-              </div>
-              
+              </Stack>
+
               {/* Quick stats */}
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
+              <Grid container spacing={2} sx={{ pt: 2, borderTop: 1, borderColor: 'divider' }}>
                 {[
-                  { label: "Classes", value: "24" },
-                  { label: "Exams", value: "8" },
-                  { label: "Hours", value: "156" },
+                  { label: 'Classes', value: '24' },
+                  { label: 'Exams', value: '8' },
+                  { label: 'Hours', value: '156' },
                 ].map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <p className="text-xl font-bold text-foreground">{stat.value}</p>
-                    <p className="text-xs text-muted-foreground">{stat.label}</p>
-                  </div>
+                  <Grid key={stat.label} size={4}>
+                    <Box textAlign="center">
+                      <Typography variant="h6" fontWeight={700}>
+                        {stat.value}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {stat.label}
+                      </Typography>
+                    </Box>
+                  </Grid>
                 ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
+              </Grid>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
     </SectionWrapper>
   );
 };
 
 export default FamilyAccountsSection;
+
