@@ -35,7 +35,7 @@ export const SchedulingSection = () => {
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
             >
               Simple Scheduling.{" "}
-              <span className="gradient-text">Secure Payments.</span>
+              <span className="text-primary">Secure Payments.</span>
             </motion.h2>
             
             <motion.p
@@ -122,7 +122,7 @@ export const SchedulingSection = () => {
                         !isCurrentMonth
                           ? "text-muted-foreground/30"
                           : isToday
-                          ? "gradient-bg text-primary-foreground font-bold"
+                          ? "bg-primary text-primary-foreground font-bold"
                           : hasClass
                           ? "bg-primary/10 text-primary font-medium"
                           : "text-foreground hover:bg-muted"
@@ -146,7 +146,7 @@ export const SchedulingSection = () => {
                 className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/20"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-12 rounded-full gradient-bg" />
+                  <div className="w-2 h-12 rounded-full bg-primary" />
                   <div>
                     <p className="font-semibold text-foreground">SAT Math Practice</p>
                     <p className="text-sm text-muted-foreground">Today, 4:00 PM - 5:00 PM</p>

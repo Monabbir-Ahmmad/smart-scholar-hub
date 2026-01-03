@@ -50,7 +50,7 @@ export const VerifiedTutorsSection = () => {
             className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
           >
             Learn from{" "}
-            <span className="gradient-text">Verified Subject Experts</span>
+            <span className="text-primary">Verified Subject Experts</span>
           </motion.h2>
           
           <motion.p
@@ -86,7 +86,7 @@ export const VerifiedTutorsSection = () => {
                     whileInView={{ scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 + index * 0.15, type: "spring" }}
-                    className="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center mx-auto mb-5"
+                    className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-5"
                   >
                     <step.icon className="w-8 h-8 text-primary-foreground" />
                   </motion.div>
@@ -137,7 +137,7 @@ export const VerifiedTutorsSection = () => {
                 viewport={{ once: true }}
                 transition={{ delay: 1 + index * 0.1 }}
               >
-                <p className="text-3xl lg:text-4xl font-bold gradient-text">{stat.value}</p>
+                <p className="text-3xl lg:text-4xl font-bold text-primary">{stat.value}</p>
                 <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
               </motion.div>
             ))}

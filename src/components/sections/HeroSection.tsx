@@ -13,7 +13,7 @@ export const HeroSection = () => {
       <motion.div
         animate={{ y: [-20, 20, -20], rotate: [0, 5, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-32 left-[10%] w-20 h-20 rounded-2xl gradient-bg opacity-20 blur-sm"
+        className="absolute top-32 left-[10%] w-20 h-20 rounded-2xl bg-primary opacity-20 blur-sm"
       />
       <motion.div
         animate={{ y: [20, -20, 20], rotate: [0, -5, 0] }}
@@ -44,7 +44,7 @@ export const HeroSection = () => {
             <AnimatedText delay={0.2} className="block text-foreground">
               Prepare Smarter.
             </AnimatedText>
-            <AnimatedText delay={0.5} className="block gradient-text">
+            <AnimatedText delay={0.5} className="block text-primary">
               Learn Faster.
             </AnimatedText>
             <AnimatedText delay={0.8} className="block text-foreground">

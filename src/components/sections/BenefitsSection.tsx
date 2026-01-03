@@ -57,7 +57,7 @@ export const BenefitsSection = () => {
             className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
           >
             Everything You Need to{" "}
-            <span className="gradient-text">Succeed</span>
+            <span className="text-primary">Succeed</span>
           </motion.h2>
           
           <motion.p
@@ -83,13 +83,13 @@ export const BenefitsSection = () => {
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
               className="group relative p-8 bg-card rounded-2xl border border-border/50 card-shadow hover:card-shadow-hover transition-all duration-300 text-center"
             >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
               <div className="relative z-10">
                 <motion.div
                   whileHover={{ rotate: 360, scale: 1.1 }}
                   transition={{ duration: 0.5 }}
-                  className="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center mx-auto mb-6"
+                  className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-6"
                 >
                   <benefit.icon className="w-8 h-8 text-primary-foreground" />
                 </motion.div>
