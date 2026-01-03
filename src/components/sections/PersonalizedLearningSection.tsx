@@ -50,7 +50,7 @@ export const PersonalizedLearningSection = () => {
             className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
           >
             Learning That{" "}
-            <span className="gradient-text">Adapts to You</span>
+            <span className="text-primary">Adapts to You</span>
           </motion.h2>
           
           <motion.p
@@ -76,10 +76,10 @@ export const PersonalizedLearningSection = () => {
               whileHover={{ y: -8 }}
               className="group relative p-6 bg-card rounded-2xl border border-border/50 card-shadow hover:card-shadow-hover transition-all duration-300"
             >
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="w-7 h-7 text-primary-foreground" />
                 </div>
                 
@@ -109,7 +109,7 @@ export const PersonalizedLearningSection = () => {
                 className="flex items-center gap-4"
               >
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold ${
-                  index === 4 ? "gradient-bg text-primary-foreground" : "bg-muted text-foreground"
+                  index === 4 ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
                 }`}>
                   {index + 1}
                 </div>

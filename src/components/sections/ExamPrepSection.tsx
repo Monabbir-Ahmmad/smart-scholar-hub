@@ -53,7 +53,7 @@ export const ExamPrepSection = () => {
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
             >
               Ace Every Exam with{" "}
-              <span className="gradient-text">Confidence</span>
+              <span className="text-primary">Confidence</span>
             </motion.h2>
             
             <motion.p
@@ -110,7 +110,7 @@ export const ExamPrepSection = () => {
                       whileInView={{ height: `${height}%` }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.5 + i * 0.1, duration: 0.6, ease: "easeOut" }}
-                      className="flex-1 rounded-t-md gradient-bg"
+                      className="flex-1 rounded-t-md bg-primary"
                     />
                   ))}
                 </div>

@@ -34,7 +34,7 @@ export const CTASection = () => {
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-6">
               Start Your Learning{" "}
-              <span className="gradient-text">Journey Today</span>
+              <span className="text-primary">Journey Today</span>
             </h2>
             
             <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">

@@ -107,7 +107,7 @@ export const LiveClassesSection = () => {
                   {[1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary border-2 border-card"
+                      className="w-8 h-8 rounded-full bg-primary border-2 border-card"
                     />
                   ))}
                 </div>
@@ -140,7 +140,7 @@ export const LiveClassesSection = () => {
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
             >
               Learn Live with{" "}
-              <span className="gradient-text">Real Teachers</span>
+              <span className="text-primary">Real Teachers</span>
             </motion.h2>
             
             <motion.p
@@ -164,7 +164,7 @@ export const LiveClassesSection = () => {
                   transition={{ delay: 0.3 + index * 0.1 }}
                   className="flex items-start gap-4 p-4 rounded-xl bg-card/50 border border-border/30 hover:bg-card hover:border-border transition-all duration-300"
                 >
-                  <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
                     <feature.icon className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>

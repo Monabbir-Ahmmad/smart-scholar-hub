@@ -51,9 +51,9 @@ export const GradientBackground = ({
     );
   }
 
-  // Default mesh
+  // Default mesh - now using solid colors
   return (
-    <div className={`absolute inset-0 gradient-mesh ${className}`}>
+    <div className={`absolute inset-0 ${className}`}>
       <motion.div
         animate={{
           scale: [1, 1.1, 1],
@@ -77,7 +77,7 @@ export const GradientBackground = ({
           ease: "easeInOut",
           delay: 1,
         }}
-        className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-secondary/10 blur-[100px]"
+        className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-muted/50 blur-[100px]"
       />
     </div>
   );

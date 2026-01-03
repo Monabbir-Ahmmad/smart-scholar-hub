@@ -97,7 +97,7 @@ export const AdminSection = () => {
                     whileInView={{ height: `${height}%` }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.6 + i * 0.05, duration: 0.5 }}
-                    className={`flex-1 rounded-t ${i === 11 ? "gradient-bg" : "bg-primary/20"}`}
+                    className={`flex-1 rounded-t ${i === 11 ? "bg-primary" : "bg-primary/20"}`}
                   />
                 ))}
               </div>
@@ -123,7 +123,7 @@ export const AdminSection = () => {
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
             >
               Powerful Tools{" "}
-              <span className="gradient-text">Behind the Scenes</span>
+              <span className="text-primary">Behind the Scenes</span>
             </motion.h2>
             
             <motion.p
@@ -147,7 +147,7 @@ export const AdminSection = () => {
                   transition={{ delay: 0.3 + index * 0.1 }}
                   className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border/50"
                 >
-                  <div className="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center flex-shrink-0">
                     <feature.icon className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>

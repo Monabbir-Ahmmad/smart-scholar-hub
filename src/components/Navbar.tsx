@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -24,12 +25,12 @@ export const Navbar = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
               <GraduationCap className="w-6 h-6 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold text-foreground">EduLearn</span>
-          </a>
+          </Link>
           
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8">
@@ -46,12 +47,16 @@ export const Navbar = () => {
           
           {/* CTAs */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="ghost" size="sm">
-              Sign In
-            </Button>
-            <Button variant="default" size="sm">
-              Get Started
-            </Button>
+            <Link to="/sign-in">
+              <Button variant="ghost" size="sm">
+                Sign In
+              </Button>
+            </Link>
+            <Link to="/sign-up">
+              <Button variant="default" size="sm">
+                Get Started
+              </Button>
+            </Link>
           </div>
           
           {/* Mobile menu button */}
@@ -83,12 +88,16 @@ export const Navbar = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border">
-                <Button variant="ghost" className="justify-start">
-                  Sign In
-                </Button>
-                <Button variant="default">
-                  Get Started
-                </Button>
+                <Link to="/sign-in" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/sign-up" onClick={() => setIsOpen(false)}>
+                  <Button variant="default" className="w-full">
+                    Get Started
+                  </Button>
+                </Link>
               </div>
             </nav>
           </motion.div>

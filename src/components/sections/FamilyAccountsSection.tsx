@@ -66,7 +66,7 @@ export const FamilyAccountsSection = () => {
               className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
             >
               Built for Students.{" "}
-              <span className="gradient-text">Trusted by Parents.</span>
+              <span className="text-primary">Trusted by Parents.</span>
             </motion.h2>
             
             <motion.p
@@ -117,7 +117,7 @@ export const FamilyAccountsSection = () => {
                   <h3 className="text-lg font-bold text-foreground">Family Dashboard</h3>
                   <p className="text-sm text-muted-foreground">The Johnson Family</p>
                 </div>
-                <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
                   <Users className="w-5 h-5 text-primary-foreground" />
                 </div>
               </div>
@@ -138,7 +138,7 @@ export const FamilyAccountsSection = () => {
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary" />
+                        <div className="w-8 h-8 rounded-full bg-primary" />
                         <div>
                           <p className="font-medium text-foreground text-sm">{member.name}</p>
                           <p className="text-xs text-muted-foreground">{member.role}</p>
@@ -152,7 +152,7 @@ export const FamilyAccountsSection = () => {
                         whileInView={{ width: `${member.progress}%` }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.7 + index * 0.1, duration: 0.8 }}
-                        className="h-full gradient-bg rounded-full"
+                        className="h-full bg-primary rounded-full"
                       />
                     </div>
                   </motion.div>
