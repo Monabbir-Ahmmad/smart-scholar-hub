@@ -1,8 +1,6 @@
-'use client';
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -15,6 +13,7 @@ import {
   Select,
   FormControl,
   InputLabel,
+  SelectChangeEvent,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -88,10 +87,13 @@ export default function ContactPage() {
     setFormData({ ...formData, [field]: e.target.value });
   };
 
+  const handleSelectChange = (e: SelectChangeEvent) => {
+    setFormData({ ...formData, inquiryType: e.target.value });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -144,7 +146,7 @@ export default function ContactPage() {
           </Typography>
           <Button
             component={Link}
-            href="/"
+            to="/"
             variant="contained"
             size="large"
           >
@@ -261,7 +263,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             {/* Logo */}
-            <Link href="/" style={{ textDecoration: 'none' }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
               <Stack direction="row" alignItems="center" spacing={1.5} mb={6}>
                 <Box
                   sx={{
@@ -369,7 +371,7 @@ export default function ContactPage() {
         }}
       >
         {/* Mobile Logo */}
-        <Link href="/" style={{ textDecoration: 'none' }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <Stack
             direction="row"
             alignItems="center"
@@ -406,7 +408,7 @@ export default function ContactPage() {
           transition={{ duration: 0.3 }}
           mb={4}
         >
-          <Link href="/" style={{ textDecoration: 'none' }}>
+          <Link to="/" style={{ textDecoration: 'none' }}>
             <Stack
               direction="row"
               alignItems="center"
@@ -498,11 +500,12 @@ export default function ContactPage() {
                 />
 
                 <FormControl fullWidth>
-                  <InputLabel>Inquiry Type</InputLabel>
+                  <InputLabel id="inquiry-type-label">Inquiry Type</InputLabel>
                   <Select
+                    labelId="inquiry-type-label"
                     value={formData.inquiryType}
                     label="Inquiry Type"
-                    onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
+                    onChange={handleSelectChange}
                     required
                   >
                     {inquiryTypes.map((type) => (
@@ -519,44 +522,24 @@ export default function ContactPage() {
                   value={formData.message}
                   onChange={handleChange('message')}
                   required
-                  multiline
-                  rows={4}
                   fullWidth
+                  multiline
+                  rows={5}
                 />
 
                 <Button
                   type="submit"
                   variant="contained"
                   size="large"
-                  disabled={isSubmitting}
                   fullWidth
+                  disabled={isSubmitting}
                   endIcon={!isSubmitting && <SendIcon />}
-                  sx={{ py: 1.5, mt: 1 }}
+                  sx={{ py: 1.5 }}
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
               </Stack>
             </Box>
-
-            {/* Privacy Note */}
-            <Typography
-              component={motion.p}
-              variant="caption"
-              color="text.secondary"
-              textAlign="center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              By submitting this form, you agree to our{' '}
-              <Link href="/privacy" style={{ color: theme.palette.primary.main }}>
-                Privacy Policy
-              </Link>
-              {' '}and{' '}
-              <Link href="/terms" style={{ color: theme.palette.primary.main }}>
-                Terms of Service
-              </Link>
-            </Typography>
           </Stack>
         </Box>
       </Box>

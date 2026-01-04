@@ -1,7 +1,5 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Box,
@@ -20,7 +18,6 @@ import GroupIcon from '@mui/icons-material/Group';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import Link from 'next/link';
 
 const roles = [
   {
@@ -57,13 +54,12 @@ const floatingIcons = [
 export default function RoleSelectionPage() {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const theme = useTheme();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleContinue = () => {
     if (selectedRole) {
-      // Navigate to dashboard or onboarding based on role
       console.log('Selected role:', selectedRole);
-      router.push('/');
+      navigate('/');
     }
   };
 
@@ -173,7 +169,7 @@ export default function RoleSelectionPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             {/* Logo */}
-            <Link href="/" style={{ textDecoration: 'none' }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
               <Stack direction="row" alignItems="center" spacing={1.5} mb={6}>
                 <Box
                   sx={{
@@ -236,7 +232,7 @@ export default function RoleSelectionPage() {
         }}
       >
         {/* Mobile Logo */}
-        <Link href="/" style={{ textDecoration: 'none' }}>
+        <Link to="/" style={{ textDecoration: 'none' }}>
           <Stack
             direction="row"
             alignItems="center"

@@ -1,7 +1,5 @@
-'use client';
-
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   AppBar,
@@ -53,7 +51,7 @@ export const Navbar = () => {
       <Container maxWidth="xl">
         <Toolbar sx={{ justifyContent: 'space-between', py: { xs: 1, lg: 1.5 } }}>
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: 'none' }}>
+          <Link to="/" style={{ textDecoration: 'none' }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Box
                 sx={{
@@ -107,7 +105,7 @@ export const Navbar = () => {
           >
             <Button
               component={Link}
-              href="/sign-in"
+              to="/sign-in"
               variant="text"
               color="inherit"
               size="small"
@@ -117,7 +115,7 @@ export const Navbar = () => {
             </Button>
             <Button
               component={Link}
-              href="/sign-up"
+              to="/sign-up"
               variant="contained"
               size="small"
             >
@@ -173,7 +171,7 @@ export const Navbar = () => {
         <Stack spacing={1.5} px={2}>
           <Button
             component={Link}
-            href="/sign-in"
+            to="/sign-in"
             variant="outlined"
             fullWidth
             onClick={() => setIsOpen(false)}
@@ -182,7 +180,7 @@ export const Navbar = () => {
           </Button>
           <Button
             component={Link}
-            href="/sign-up"
+            to="/sign-up"
             variant="contained"
             fullWidth
             onClick={() => setIsOpen(false)}

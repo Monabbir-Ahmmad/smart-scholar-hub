@@ -1,7 +1,5 @@
-'use client';
-
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Box,
@@ -89,7 +87,7 @@ export default function SignInPage() {
                 <Typography variant="body2" fontWeight={500}>
                   Password
                 </Typography>
-                <Link href="/forgot-password" style={{ textDecoration: 'none' }}>
+                <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
                   <Typography variant="body2" color="primary" sx={{ '&:hover': { textDecoration: 'underline' } }}>
                     Forgot password?
                   </Typography>
@@ -147,7 +145,7 @@ export default function SignInPage() {
           transition={{ delay: 0.3 }}
         >
           Don&apos;t have an account?{' '}
-          <Link href="/sign-up" style={{ textDecoration: 'none' }}>
+          <Link to="/sign-up" style={{ textDecoration: 'none' }}>
             <Typography component="span" color="primary" fontWeight={500} sx={{ '&:hover': { textDecoration: 'underline' } }}>
               Sign up
             </Typography>
@@ -157,4 +155,3 @@ export default function SignInPage() {
     </AuthLayout>
   );
 }
-
