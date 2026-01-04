@@ -1,6 +1,4 @@
-'use client';
-
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -47,14 +45,14 @@ export const Footer = () => {
         <Grid container spacing={6}>
           {/* Brand */}
           <Grid size={{ xs: 12, lg: 4 }}>
-            <Link href="/" style={{ textDecoration: 'none' }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
               <Stack direction="row" alignItems="center" spacing={1} mb={2}>
                 <Box
                   sx={{
                     width: 40,
                     height: 40,
                     borderRadius: 2,
-                    background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                    bgcolor: 'primary.main',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

@@ -16,10 +16,18 @@
     "@mui/icons-material": "^6.3.0",
     "@mui/material": "^6.3.0",
     "@tanstack/react-query": "^5.83.0",
+    "@vitejs/plugin-react": "^5.1.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.26",
     "framer-motion": "^12.23.26",
+    "globals": "^17.0.0",
+    "lovable-tagger": "^1.1.13",
     "next": "^15.1.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.11.0",
+    "typescript-eslint": "^8.51.0",
+    "vite": "^7.3.0"
   },
   "devDependencies": {
     "@types/node": "^22.16.5",

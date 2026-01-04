@@ -1,7 +1,5 @@
-'use client';
-
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -181,7 +179,7 @@ export const AuthLayout = ({ children, backLink, variant = 'signin' }: AuthLayou
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             {/* Logo */}
-            <Link href="/" style={{ textDecoration: 'none' }}>
+            <Link to="/" style={{ textDecoration: 'none' }}>
               <Stack direction="row" alignItems="center" spacing={1.5} mb={6}>
                 <Box
                   sx={{
@@ -312,7 +310,7 @@ export const AuthLayout = ({ children, backLink, variant = 'signin' }: AuthLayou
         }}
       >
         {/* Mobile Logo */}
-        <Link href="/" style={{ textDecoration: 'none', display: 'block' }}>
+        <Link to="/" style={{ textDecoration: 'none', display: 'block' }}>
           <Stack
             direction="row"
             alignItems="center"
@@ -350,7 +348,7 @@ export const AuthLayout = ({ children, backLink, variant = 'signin' }: AuthLayou
             transition={{ duration: 0.3 }}
             mb={4}
           >
-            <Link href={backLink.to} style={{ textDecoration: 'none' }}>
+            <Link to={backLink.to} style={{ textDecoration: 'none' }}>
               <Stack
                 direction="row"
                 alignItems="center"

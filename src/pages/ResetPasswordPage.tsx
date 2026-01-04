@@ -1,7 +1,5 @@
-'use client';
-
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Box,
@@ -12,7 +10,6 @@ import {
   IconButton,
   Stack,
   Chip,
-  LinearProgress,
   CircularProgress,
   alpha,
   useTheme,
@@ -349,7 +346,7 @@ export default function ResetPasswordPage() {
             >
               <Button
                 component={Link}
-                href="/sign-in"
+                to="/sign-in"
                 variant="contained"
                 size="large"
                 fullWidth
@@ -365,4 +362,3 @@ export default function ResetPasswordPage() {
     </AuthLayout>
   );
 }
-

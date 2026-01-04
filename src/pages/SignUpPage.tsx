@@ -1,7 +1,5 @@
-'use client';
-
 import { useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Box,
@@ -247,7 +245,7 @@ export default function SignUpPage() {
           transition={{ delay: 0.3 }}
         >
           Already have an account?{' '}
-          <Link href="/sign-in" style={{ textDecoration: 'none' }}>
+          <Link to="/sign-in" style={{ textDecoration: 'none' }}>
             <Typography component="span" color="primary" fontWeight={500} sx={{ '&:hover': { textDecoration: 'underline' } }}>
               Sign in
             </Typography>
@@ -257,4 +255,3 @@ export default function SignUpPage() {
     </AuthLayout>
   );
 }
-

@@ -1,42 +1,33 @@
-'use client';
-
 import { createTheme, alpha } from '@mui/material/styles';
-import { Plus_Jakarta_Sans } from 'next/font/google';
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 // EdTech Design System Colors
 const colors = {
   primary: {
-    main: '#3B82F6', // HSL 217 100% 61%
+    main: '#3B82F6',
     light: '#60A5FA',
     dark: '#2563EB',
     contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#8B5CF6', // HSL 265 83% 57%
+    main: '#8B5CF6',
     light: '#A78BFA',
     dark: '#7C3AED',
     contrastText: '#FFFFFF',
   },
   success: {
-    main: '#2DD4BF', // HSL 174 64% 47%
+    main: '#2DD4BF',
     light: '#5EEAD4',
     dark: '#14B8A6',
     contrastText: '#FFFFFF',
   },
   warning: {
-    main: '#F59E0B', // HSL 45 100% 52%
+    main: '#F59E0B',
     light: '#FBBF24',
     dark: '#D97706',
     contrastText: '#1E293B',
   },
   error: {
-    main: '#EF4444', // HSL 0 84% 60%
+    main: '#EF4444',
     light: '#F87171',
     dark: '#DC2626',
     contrastText: '#FFFFFF',
@@ -75,7 +66,7 @@ export const lightTheme = createTheme({
     divider: colors.grey[200],
   },
   typography: {
-    fontFamily: plusJakartaSans.style.fontFamily,
+    fontFamily: '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     h1: {
       fontWeight: 800,
       letterSpacing: '-0.025em',
@@ -268,4 +259,3 @@ export const darkTheme = createTheme({
 });
 
 export default lightTheme;
-
