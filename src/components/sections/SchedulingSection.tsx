@@ -1,339 +1,181 @@
-'use client';
-
-import { motion } from 'framer-motion';
-import {
-  Box,
-  Container,
-  Typography,
-  Grid2 as Grid,
-  Card,
-  CardContent,
-  Stack,
-  alpha,
-  useTheme,
-} from '@mui/material';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import PaymentIcon from '@mui/icons-material/Payment';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import { SectionWrapper } from '@/components/SectionWrapper';
+import { motion } from "framer-motion";
+import { SectionWrapper } from "@/components/ui/SectionWrapper";
+import { Calendar, Bell, CreditCard, RefreshCw } from "lucide-react";
 
 export const SchedulingSection = () => {
-  const theme = useTheme();
-
-  const features = [
-    { icon: CalendarMonthIcon, title: 'Smart Calendar', desc: 'Sync with iCal, Google Calendar' },
-    { icon: NotificationsActiveIcon, title: 'Auto Reminders', desc: 'Never miss a class again' },
-    { icon: PaymentIcon, title: 'Stripe Payments', desc: 'Secure, hassle-free billing' },
-    { icon: AutorenewIcon, title: 'Subscriptions', desc: 'Flexible monthly plans' },
-  ];
-
   return (
-    <SectionWrapper id="scheduling">
+    <SectionWrapper id="scheduling" className="bg-background">
       {/* Calendar grid background */}
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          opacity: 0.03,
-          backgroundImage: `linear-gradient(${theme.palette.primary.main} 1px, transparent 1px), linear-gradient(90deg, ${theme.palette.primary.main} 1px, transparent 1px)`,
-          backgroundSize: '80px 80px',
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
+          backgroundSize: "80px 80px",
         }}
       />
-
-      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={{ xs: 6, lg: 10 }} alignItems="center">
+      
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Typography
-              component={motion.span}
+          <div>
+            <motion.span
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              variant="overline"
-              color="primary"
-              fontWeight={600}
-              sx={{ display: 'block', mb: 2 }}
+              className="inline-block text-sm font-semibold text-primary mb-4"
             >
               SCHEDULING & PAYMENTS
-            </Typography>
-
-            <Typography
-              component={motion.h2}
+            </motion.span>
+            
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              variant="h2"
-              sx={{ fontSize: { xs: '2rem', lg: '2.5rem', xl: '3rem' }, mb: 3 }}
+              className="text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-6"
             >
-              Simple Scheduling.{' '}
-              <Box component="span" color="primary.main">
-                Secure Payments.
-              </Box>
-            </Typography>
-
-            <Typography
-              component={motion.p}
+              Simple Scheduling.{" "}
+              <span className="text-primary">Secure Payments.</span>
+            </motion.h2>
+            
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              variant="body1"
-              color="text.secondary"
-              sx={{ mb: 4, fontSize: '1.1rem' }}
+              className="text-lg text-muted-foreground mb-8"
             >
-              Book lessons, manage your calendar, and handle payments
+              Book lessons, manage your calendar, and handle payments 
               seamlessly—all in one place with enterprise-grade security.
-            </Typography>
-
-            <Grid container spacing={2}>
-              {features.map((feature, index) => (
-                <Grid key={feature.title} size={{ xs: 12, sm: 6 }}>
-                  <Card
-                    component={motion.div}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                    sx={{
-                      height: '100%',
-                      border: `1px solid ${alpha(theme.palette.divider, 0.5)}`,
-                    }}
-                  >
-                    <CardContent sx={{ p: 2 }}>
-                      <Stack direction="row" spacing={1.5} alignItems="flex-start">
-                        <Box
-                          sx={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: 2,
-                            bgcolor: alpha(theme.palette.primary.main, 0.1),
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexShrink: 0,
-                          }}
-                        >
-                          <feature.icon sx={{ color: 'primary.main', fontSize: 20 }} />
-                        </Box>
-                        <Box>
-                          <Typography variant="subtitle2" fontWeight={600}>
-                            {feature.title}
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            {feature.desc}
-                          </Typography>
-                        </Box>
-                      </Stack>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
-
-          {/* Calendar mockup */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Box
-              component={motion.div}
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              sx={{ position: 'relative' }}
-            >
-              <Card sx={{ p: 3, borderRadius: 6 }}>
-                {/* Calendar header */}
-                <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-                  <Typography variant="h6" fontWeight={700}>
-                    January 2026
-                  </Typography>
-                  <Stack direction="row" spacing={1}>
-                    <Box
-                      sx={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 2,
-                        bgcolor: 'grey.100',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      ←
-                    </Box>
-                    <Box
-                      sx={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 2,
-                        bgcolor: 'grey.100',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      →
-                    </Box>
-                  </Stack>
-                </Stack>
-
-                {/* Days header */}
-                <Grid container spacing={0.5} mb={1}>
-                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
-                    <Grid key={`${day}-${i}`} size={12 / 7}>
-                      <Typography
-                        variant="caption"
-                        fontWeight={500}
-                        color="text.secondary"
-                        sx={{ display: 'block', textAlign: 'center', py: 1 }}
-                      >
-                        {day}
-                      </Typography>
-                    </Grid>
-                  ))}
-                </Grid>
-
-                {/* Calendar grid */}
-                <Grid container spacing={0.5}>
-                  {Array.from({ length: 35 }, (_, i) => {
-                    const day = i - 3;
-                    const isCurrentMonth = day >= 1 && day <= 31;
-                    const hasClass = [5, 8, 12, 15, 19, 22, 26].includes(day);
-                    const isToday = day === 15;
-
-                    return (
-                      <Grid key={i} size={12 / 7}>
-                        <Box
-                          component={motion.div}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.4 + i * 0.01 }}
-                          sx={{
-                            aspectRatio: '1',
-                            borderRadius: 2,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative',
-                            fontSize: '0.875rem',
-                            cursor: 'pointer',
-                            color: !isCurrentMonth
-                              ? alpha(theme.palette.text.secondary, 0.3)
-                              : isToday
-                              ? 'primary.contrastText'
-                              : hasClass
-                              ? 'primary.main'
-                              : 'text.primary',
-                            bgcolor: isToday
-                              ? 'primary.main'
-                              : hasClass
-                              ? alpha(theme.palette.primary.main, 0.1)
-                              : 'transparent',
-                            fontWeight: isToday || hasClass ? 500 : 400,
-                            '&:hover': {
-                              bgcolor: !isToday ? 'grey.100' : undefined,
-                            },
-                          }}
-                        >
-                          {isCurrentMonth ? day : day > 0 ? day : 31 + day}
-                          {hasClass && !isToday && (
-                            <Box
-                              sx={{
-                                position: 'absolute',
-                                bottom: 4,
-                                width: 4,
-                                height: 4,
-                                borderRadius: '50%',
-                                bgcolor: 'primary.main',
-                              }}
-                            />
-                          )}
-                        </Box>
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-
-                {/* Upcoming class */}
-                <Card
-                  component={motion.div}
+            </motion.p>
+            
+            <div className="grid sm:grid-cols-2 gap-4">
+              {[
+                { icon: Calendar, title: "Smart Calendar", desc: "Sync with iCal, Google Calendar" },
+                { icon: Bell, title: "Auto Reminders", desc: "Never miss a class again" },
+                { icon: CreditCard, title: "Stripe Payments", desc: "Secure, hassle-free billing" },
+                { icon: RefreshCw, title: "Subscriptions", desc: "Flexible monthly plans" },
+              ].map((feature, index) => (
+                <motion.div
+                  key={feature.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.8 }}
-                  sx={{
-                    mt: 3,
-                    p: 2,
-                    bgcolor: alpha(theme.palette.primary.main, 0.05),
-                    border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-                    boxShadow: 0,
-                  }}
+                  transition={{ delay: 0.3 + index * 0.1 }}
+                  className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border/50"
                 >
-                  <Stack direction="row" alignItems="center" spacing={1.5}>
-                    <Box sx={{ width: 4, height: 48, borderRadius: 2, bgcolor: 'primary.main' }} />
-                    <Box flex={1}>
-                      <Typography variant="subtitle2" fontWeight={600}>
-                        SAT Math Practice
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Today, 4:00 PM - 5:00 PM
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        px: 1.5,
-                        py: 0.5,
-                        borderRadius: 10,
-                        bgcolor: alpha(theme.palette.success.main, 0.1),
-                      }}
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <feature.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">{feature.title}</h4>
+                    <p className="text-xs text-muted-foreground mt-1">{feature.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Calendar mockup */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="relative"
+          >
+            <div className="bg-card rounded-3xl p-6 border border-border shadow-xl">
+              {/* Calendar header */}
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-bold text-foreground">January 2026</h3>
+                <div className="flex gap-2">
+                  <button className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">←</button>
+                  <button className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">→</button>
+                </div>
+              </div>
+              
+              {/* Days header */}
+              <div className="grid grid-cols-7 gap-1 mb-2">
+                {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
+                  <div key={day} className="text-center text-xs font-medium text-muted-foreground py-2">
+                    {day}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Calendar grid */}
+              <div className="grid grid-cols-7 gap-1">
+                {Array.from({ length: 35 }, (_, i) => {
+                  const day = i - 3;
+                  const isCurrentMonth = day >= 1 && day <= 31;
+                  const hasClass = [5, 8, 12, 15, 19, 22, 26].includes(day);
+                  const isToday = day === 15;
+                  
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.4 + i * 0.01 }}
+                      className={`aspect-square rounded-lg flex items-center justify-center text-sm relative ${
+                        !isCurrentMonth
+                          ? "text-muted-foreground/30"
+                          : isToday
+                          ? "bg-primary text-primary-foreground font-bold"
+                          : hasClass
+                          ? "bg-primary/10 text-primary font-medium"
+                          : "text-foreground hover:bg-muted"
+                      }`}
                     >
-                      <Typography variant="caption" fontWeight={600} color="success.main">
-                        Confirmed
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </Card>
-              </Card>
-
-              {/* Payment success badge */}
-              <Box
-                component={motion.div}
-                initial={{ opacity: 0, scale: 0.8, x: 20 }}
-                whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                      {isCurrentMonth ? day : day > 0 ? day : 31 + day}
+                      {hasClass && !isToday && (
+                        <span className="absolute bottom-1 w-1 h-1 rounded-full bg-primary" />
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </div>
+              
+              {/* Upcoming class */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 1, type: 'spring' }}
-                sx={{
-                  position: 'absolute',
-                  bottom: -16,
-                  right: -16,
-                  bgcolor: 'success.main',
-                  color: 'success.contrastText',
-                  px: 2,
-                  py: 1.5,
-                  borderRadius: 2,
-                  boxShadow: 4,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                }}
+                transition={{ delay: 0.8 }}
+                className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/20"
               >
-                <PaymentIcon sx={{ fontSize: 16 }} />
-                <Typography variant="body2" fontWeight={600}>
-                  Payment Successful
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-12 rounded-full bg-primary" />
+                  <div>
+                    <p className="font-semibold text-foreground">SAT Math Practice</p>
+                    <p className="text-sm text-muted-foreground">Today, 4:00 PM - 5:00 PM</p>
+                  </div>
+                  <div className="ml-auto">
+                    <span className="px-3 py-1 text-xs font-semibold text-success bg-success/10 rounded-full">
+                      Confirmed
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+            
+            {/* Payment success badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: 20 }}
+              whileInView={{ opacity: 1, scale: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 1, type: "spring" }}
+              className="absolute -bottom-4 -right-4 bg-success text-success-foreground px-4 py-3 rounded-xl shadow-lg flex items-center gap-2"
+            >
+              <CreditCard className="w-4 h-4" />
+              <span className="text-sm font-semibold">Payment Successful</span>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
     </SectionWrapper>
   );
 };
 
 export default SchedulingSection;
-
