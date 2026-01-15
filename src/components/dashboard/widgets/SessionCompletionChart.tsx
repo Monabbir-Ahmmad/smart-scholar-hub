@@ -1,3 +1,5 @@
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
 import {
   LineChart,
@@ -21,37 +23,46 @@ const data = [
 ];
 
 export const SessionCompletionChart = ({ delay = 0 }: { delay?: number }) => {
+  const theme = useTheme();
+
   return (
     <ChartCard
       title="Session Completion Rate"
       subtitle="Weekly completion percentage"
       delay={delay}
     >
-      <div className="h-[300px] w-full">
+      <Box sx={{ height: 300, width: "100%" }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-            <XAxis dataKey="week" className="text-xs" />
-            <YAxis className="text-xs" domain={[70, 100]} tickFormatter={(value) => `${value}%`} />
+            <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+            <XAxis
+              dataKey="week"
+              tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+            />
+            <YAxis
+              domain={[70, 100]}
+              tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+              tickFormatter={(value) => `${value}%`}
+            />
             <Tooltip
               contentStyle={{
-                backgroundColor: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "8px",
+                backgroundColor: theme.palette.background.paper,
+                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: 8,
               }}
               formatter={(value: number) => [`${value}%`, "Completion Rate"]}
             />
             <Line
               type="monotone"
               dataKey="rate"
-              stroke="hsl(var(--success))"
+              stroke={theme.palette.success.main}
               strokeWidth={3}
-              dot={{ fill: "hsl(var(--success))", strokeWidth: 2 }}
+              dot={{ fill: theme.palette.success.main, strokeWidth: 2 }}
               activeDot={{ r: 6 }}
             />
           </LineChart>
         </ResponsiveContainer>
-      </div>
+      </Box>
     </ChartCard>
   );
 };

@@ -1,6 +1,9 @@
+import { useTheme, alpha } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { AlertTriangle, Clock, Send } from "lucide-react";
 
 const bills = [
@@ -43,54 +46,93 @@ const totalOverdue = bills
   .reduce((acc, b) => acc + b.amount, 0);
 
 export const UnpaidBillsTable = ({ delay = 0 }: { delay?: number }) => {
+  const theme = useTheme();
+
   return (
     <ChartCard
       title="Outstanding Bills"
       subtitle={`$${totalOverdue.toLocaleString()} overdue`}
       delay={delay}
       action={
-        <Button size="sm" variant="outline" className="gap-2">
-          <Send className="h-4 w-4" />
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<Send style={{ width: 16, height: 16 }} />}
+        >
           Send Reminders
         </Button>
       }
     >
-      <div className="space-y-3">
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
         {bills.map((bill) => (
-          <div
+          <Box
             key={bill.id}
-            className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              p: 1.5,
+              borderRadius: 2,
+              border: `1px solid ${theme.palette.divider}`,
+              transition: "background-color 0.2s",
+              "&:hover": {
+                bgcolor: alpha(theme.palette.muted, 0.5),
+              },
+            }}
           >
-            <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                bill.status === "overdue" ? "bg-destructive/10" : "bg-accent/10"
-              }`}>
-                {bill.status === "overdue" ? (
-                  <AlertTriangle className="h-5 w-5 text-destructive" />
-                ) : (
-                  <Clock className="h-5 w-5 text-accent" />
-                )}
-              </div>
-              <div>
-                <p className="text-sm font-medium">{bill.student}</p>
-                <p className="text-xs text-muted-foreground">{bill.id}</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-sm font-bold">${bill.amount}</p>
-              <Badge 
-                variant={bill.status === "overdue" ? "destructive" : "secondary"}
-                className="text-xs"
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  bgcolor: bill.status === "overdue" 
+                    ? alpha(theme.palette.error.main, 0.1)
+                    : alpha(theme.palette.warning.main, 0.1),
+                }}
               >
-                {bill.status === "overdue" 
+                {bill.status === "overdue" ? (
+                  <AlertTriangle style={{ width: 20, height: 20, color: theme.palette.error.main }} />
+                ) : (
+                  <Clock style={{ width: 20, height: 20, color: theme.palette.warning.main }} />
+                )}
+              </Box>
+              <Box>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  {bill.student}
+                </Typography>
+                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                  {bill.id}
+                </Typography>
+              </Box>
+            </Box>
+            <Box sx={{ textAlign: "right" }}>
+              <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                ${bill.amount}
+              </Typography>
+              <Chip
+                label={bill.status === "overdue" 
                   ? `${bill.daysOverdue} days overdue`
                   : "Due soon"
                 }
-              </Badge>
-            </div>
-          </div>
+                size="small"
+                color={bill.status === "overdue" ? "error" : "default"}
+                sx={{
+                  height: 22,
+                  fontSize: "0.75rem",
+                  ...(bill.status !== "overdue" && {
+                    bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                    color: theme.palette.secondary.main,
+                  }),
+                }}
+              />
+            </Box>
+          </Box>
         ))}
-      </div>
+      </Box>
     </ChartCard>
   );
 };

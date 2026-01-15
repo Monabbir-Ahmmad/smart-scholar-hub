@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { 
   Home, 
   BookOpen, 
@@ -13,7 +17,6 @@ import {
   ChevronLeft,
   GraduationCap
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const menuItems = [
   { icon: Home, label: "Dashboard", href: "/student", active: true },
@@ -32,79 +35,153 @@ const bottomItems = [
 
 export const StudentSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const theme = useTheme();
 
   return (
     <motion.aside
       initial={{ x: -20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className={cn(
-        "fixed left-0 top-0 h-screen bg-card border-r border-border z-40 transition-all duration-300",
-        collapsed ? "w-20" : "w-64"
-      )}
+      style={{
+        position: "fixed",
+        left: 0,
+        top: 0,
+        height: "100vh",
+        backgroundColor: theme.palette.background.paper,
+        borderRight: `1px solid ${theme.palette.divider}`,
+        zIndex: 40,
+        transition: "width 0.3s ease",
+        width: collapsed ? 80 : 256,
+      }}
     >
       {/* Logo */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-            <GraduationCap className="w-5 h-5 text-primary-foreground" />
-          </div>
+      <Box
+        sx={{
+          height: 64,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          px: 2,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Box
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: 3,
+              background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <GraduationCap style={{ width: 20, height: 20, color: theme.palette.primary.contrastText }} />
+          </Box>
           {!collapsed && (
-            <motion.span 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="font-bold text-lg text-foreground"
-            >
-              Student
-            </motion.span>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: "text.primary" }}>
+                Student
+              </Typography>
+            </motion.div>
           )}
-        </div>
-        <button
+        </Box>
+        <IconButton
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2 hover:bg-muted rounded-lg transition-colors"
+          size="small"
+          sx={{ 
+            width: 32, 
+            height: 32,
+            transition: "transform 0.2s",
+            transform: collapsed ? "rotate(180deg)" : "rotate(0deg)",
+          }}
         >
-          <ChevronLeft className={cn(
-            "w-4 h-4 text-muted-foreground transition-transform",
-            collapsed && "rotate-180"
-          )} />
-        </button>
-      </div>
+          <ChevronLeft style={{ width: 16, height: 16, color: theme.palette.text.secondary }} />
+        </IconButton>
+      </Box>
 
       {/* Navigation */}
-      <nav className="p-3 space-y-1">
+      <Box component="nav" sx={{ p: 1.5 }}>
         {menuItems.map((item) => (
           <a
             key={item.label}
             href={item.href}
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200",
-              item.active 
-                ? "bg-primary text-primary-foreground shadow-md" 
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
+            style={{ textDecoration: "none" }}
           >
-            <item.icon className="w-5 h-5 flex-shrink-0" />
-            {!collapsed && (
-              <span className="font-medium">{item.label}</span>
-            )}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+                px: 1.5,
+                py: 1.25,
+                borderRadius: 3,
+                mb: 0.5,
+                transition: "all 0.2s",
+                bgcolor: item.active ? "primary.main" : "transparent",
+                color: item.active ? "primary.contrastText" : "text.secondary",
+                boxShadow: item.active ? theme.shadows[3] : "none",
+                "&:hover": {
+                  bgcolor: item.active ? "primary.main" : theme.palette.muted,
+                  color: item.active ? "primary.contrastText" : "text.primary",
+                },
+              }}
+            >
+              <item.icon style={{ width: 20, height: 20, flexShrink: 0 }} />
+              {!collapsed && (
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  {item.label}
+                </Typography>
+              )}
+            </Box>
           </a>
         ))}
-      </nav>
+      </Box>
 
       {/* Bottom Navigation */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-border space-y-1">
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          p: 1.5,
+          borderTop: `1px solid ${theme.palette.divider}`,
+        }}
+      >
         {bottomItems.map((item) => (
           <a
             key={item.label}
             href={item.href}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-200"
+            style={{ textDecoration: "none" }}
           >
-            <item.icon className="w-5 h-5 flex-shrink-0" />
-            {!collapsed && (
-              <span className="font-medium">{item.label}</span>
-            )}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+                px: 1.5,
+                py: 1.25,
+                borderRadius: 3,
+                mb: 0.5,
+                color: "text.secondary",
+                transition: "all 0.2s",
+                "&:hover": {
+                  bgcolor: theme.palette.muted,
+                  color: "text.primary",
+                },
+              }}
+            >
+              <item.icon style={{ width: 20, height: 20, flexShrink: 0 }} />
+              {!collapsed && (
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  {item.label}
+                </Typography>
+              )}
+            </Box>
           </a>
         ))}
-      </div>
+      </Box>
     </motion.aside>
   );
 };

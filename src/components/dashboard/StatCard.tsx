@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { useTheme, alpha } from "@mui/material/styles";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 interface StatCardProps {
   title: string;
@@ -19,38 +22,69 @@ export const StatCard = ({
   change,
   changeType = "neutral",
   icon: Icon,
-  iconColor = "text-primary",
   delay = 0,
 }: StatCardProps) => {
+  const theme = useTheme();
+
+  const getChangeColor = () => {
+    switch (changeType) {
+      case "positive":
+        return theme.palette.success.main;
+      case "negative":
+        return theme.palette.error.main;
+      default:
+        return theme.palette.text.secondary;
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
     >
-      <Card className="hover:shadow-lg transition-shadow duration-300">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">{title}</p>
-              <p className="text-2xl font-bold text-foreground">{value}</p>
+      <Card
+        sx={{
+          "&:hover": {
+            boxShadow: theme.shadows[5],
+          },
+        }}
+      >
+        <CardContent sx={{ p: 3 }}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <Box>
+              <Typography variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
+                {title}
+              </Typography>
+              <Typography variant="h5" sx={{ fontWeight: 700, color: "text.primary", mb: 0.5 }}>
+                {value}
+              </Typography>
               {change && (
-                <p
-                  className={cn(
-                    "text-xs font-medium",
-                    changeType === "positive" && "text-success",
-                    changeType === "negative" && "text-destructive",
-                    changeType === "neutral" && "text-muted-foreground"
-                  )}
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontWeight: 500,
+                    color: getChangeColor(),
+                  }}
                 >
                   {change}
-                </p>
+                </Typography>
               )}
-            </div>
-            <div className={cn("p-3 rounded-xl bg-primary/10", iconColor)}>
-              <Icon className="h-6 w-6" />
-            </div>
-          </div>
+            </Box>
+            <Box
+              sx={{
+                p: 1.5,
+                borderRadius: 3,
+                bgcolor: alpha(theme.palette.primary.main, 0.1),
+                color: "primary.main",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon style={{ width: 24, height: 24 }} />
+            </Box>
+          </Box>
         </CardContent>
       </Card>
     </motion.div>

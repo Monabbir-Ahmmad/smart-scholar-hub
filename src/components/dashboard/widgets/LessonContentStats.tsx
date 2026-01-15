@@ -1,37 +1,10 @@
+import { motion } from "framer-motion";
+import { useTheme, alpha } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
 import { ChartCard } from "../ChartCard";
 import { BookOpen, FileText, Video, ClipboardList } from "lucide-react";
-import { motion } from "framer-motion";
-
-const contentTypes = [
-  { 
-    type: "Lessons", 
-    count: 248, 
-    icon: BookOpen, 
-    color: "bg-primary/10 text-primary",
-    change: "+12 this week"
-  },
-  { 
-    type: "Coursework", 
-    count: 186, 
-    icon: ClipboardList, 
-    color: "bg-secondary/10 text-secondary",
-    change: "+8 this week"
-  },
-  { 
-    type: "Assessments", 
-    count: 94, 
-    icon: FileText, 
-    color: "bg-success/10 text-success",
-    change: "+5 this week"
-  },
-  { 
-    type: "Resources", 
-    count: 312, 
-    icon: Video, 
-    color: "bg-accent/10 text-accent",
-    change: "+18 this week"
-  },
-];
 
 const recentLessons = [
   { title: "Advanced Calculus: Integration", subject: "Mathematics", duration: "45 min" },
@@ -40,53 +13,141 @@ const recentLessons = [
 ];
 
 export const LessonContentStats = ({ delay = 0 }: { delay?: number }) => {
+  const theme = useTheme();
+
+  const contentTypes = [
+    { 
+      type: "Lessons", 
+      count: 248, 
+      icon: BookOpen, 
+      color: theme.palette.primary.main,
+      change: "+12 this week"
+    },
+    { 
+      type: "Coursework", 
+      count: 186, 
+      icon: ClipboardList, 
+      color: theme.palette.secondary.main,
+      change: "+8 this week"
+    },
+    { 
+      type: "Assessments", 
+      count: 94, 
+      icon: FileText, 
+      color: theme.palette.success.main,
+      change: "+5 this week"
+    },
+    { 
+      type: "Resources", 
+      count: 312, 
+      icon: Video, 
+      color: theme.palette.warning.main,
+      change: "+18 this week"
+    },
+  ];
+
   return (
     <ChartCard
       title="Course Content"
       subtitle="Lessons, coursework & learning materials"
       delay={delay}
     >
-      <div className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 2 }}>
           {contentTypes.map((item, index) => (
             <motion.div
               key={item.type}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: delay + index * 0.1 }}
-              className="p-4 rounded-xl border bg-card hover:shadow-md transition-shadow"
             >
-              <div className={`w-10 h-10 rounded-lg ${item.color} flex items-center justify-center mb-3`}>
-                <item.icon className="h-5 w-5" />
-              </div>
-              <p className="text-2xl font-bold">{item.count}</p>
-              <p className="text-sm font-medium text-foreground">{item.type}</p>
-              <p className="text-xs text-muted-foreground">{item.change}</p>
+              <Card
+                sx={{
+                  p: 2,
+                  borderRadius: 3,
+                  "&:hover": {
+                    boxShadow: theme.shadows[3],
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 2,
+                    bgcolor: alpha(item.color, 0.1),
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mb: 1.5,
+                  }}
+                >
+                  <item.icon style={{ width: 20, height: 20, color: item.color }} />
+                </Box>
+                <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                  {item.count}
+                </Typography>
+                <Typography variant="body2" sx={{ fontWeight: 500, color: "text.primary" }}>
+                  {item.type}
+                </Typography>
+                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                  {item.change}
+                </Typography>
+              </Card>
             </motion.div>
           ))}
-        </div>
+        </Box>
 
-        <div className="space-y-3">
-          <h4 className="text-sm font-semibold text-muted-foreground">Recently Added Lessons</h4>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+          <Typography variant="body2" sx={{ fontWeight: 600, color: "text.secondary" }}>
+            Recently Added Lessons
+          </Typography>
           {recentLessons.map((lesson) => (
-            <div
+            <Box
               key={lesson.title}
-              className="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                p: 1.5,
+                borderRadius: 2,
+                bgcolor: alpha(theme.palette.muted, 0.5),
+                transition: "background-color 0.2s",
+                "&:hover": {
+                  bgcolor: theme.palette.muted,
+                },
+              }}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <BookOpen className="h-4 w-4 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">{lesson.title}</p>
-                  <p className="text-xs text-muted-foreground">{lesson.subject}</p>
-                </div>
-              </div>
-              <span className="text-xs text-muted-foreground">{lesson.duration}</span>
-            </div>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 2,
+                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <BookOpen style={{ width: 16, height: 16, color: theme.palette.primary.main }} />
+                </Box>
+                <Box>
+                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                    {lesson.title}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                    {lesson.subject}
+                  </Typography>
+                </Box>
+              </Box>
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                {lesson.duration}
+              </Typography>
+            </Box>
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
     </ChartCard>
   );
 };

@@ -1,3 +1,6 @@
+import { useTheme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
 import {
   BarChart,
@@ -10,15 +13,17 @@ import {
   Cell,
 } from "recharts";
 
-const data = [
-  { range: "0-50%", count: 45, color: "hsl(var(--destructive))" },
-  { range: "51-70%", count: 120, color: "hsl(var(--accent))" },
-  { range: "71-85%", count: 280, color: "hsl(var(--primary))" },
-  { range: "86-95%", count: 185, color: "hsl(var(--success))" },
-  { range: "96-100%", count: 95, color: "hsl(var(--success))" },
-];
-
 export const PerformanceDistribution = ({ delay = 0 }: { delay?: number }) => {
+  const theme = useTheme();
+
+  const data = [
+    { range: "0-50%", count: 45, color: theme.palette.error.main },
+    { range: "51-70%", count: 120, color: theme.palette.warning.main },
+    { range: "71-85%", count: 280, color: theme.palette.primary.main },
+    { range: "86-95%", count: 185, color: theme.palette.success.main },
+    { range: "96-100%", count: 95, color: theme.palette.success.main },
+  ];
+
   const totalStudents = data.reduce((acc, item) => acc + item.count, 0);
   const avgPerformance = 78.5;
 
@@ -28,27 +33,30 @@ export const PerformanceDistribution = ({ delay = 0 }: { delay?: number }) => {
       subtitle="Coursework scores across all students"
       delay={delay}
     >
-      <div className="space-y-4">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
             {totalStudents} total submissions
-          </span>
-          <span className="font-medium">
-            Avg: <span className="text-primary">{avgPerformance}%</span>
-          </span>
-        </div>
+          </Typography>
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            Avg: <Box component="span" sx={{ color: "primary.main" }}>{avgPerformance}%</Box>
+          </Typography>
+        </Box>
 
-        <div className="h-[240px] w-full">
+        <Box sx={{ height: 240, width: "100%" }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-              <XAxis dataKey="range" className="text-xs" />
-              <YAxis className="text-xs" />
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+              <XAxis
+                dataKey="range"
+                tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+              />
+              <YAxis tick={{ fill: theme.palette.text.secondary, fontSize: 12 }} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "8px",
+                  backgroundColor: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.divider}`,
+                  borderRadius: 8,
                 }}
                 formatter={(value: number) => [`${value} students`, "Count"]}
               />
@@ -59,8 +67,8 @@ export const PerformanceDistribution = ({ delay = 0 }: { delay?: number }) => {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </ChartCard>
   );
 };

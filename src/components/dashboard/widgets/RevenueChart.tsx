@@ -1,3 +1,5 @@
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
 import {
   BarChart,
@@ -20,32 +22,50 @@ const data = [
 ];
 
 export const RevenueChart = ({ delay = 0 }: { delay?: number }) => {
+  const theme = useTheme();
+
   return (
     <ChartCard
       title="Revenue Overview"
       subtitle="Monthly billing vs payments"
       delay={delay}
     >
-      <div className="h-[300px] w-full">
+      <Box sx={{ height: 300, width: "100%" }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-            <XAxis dataKey="month" className="text-xs" />
-            <YAxis className="text-xs" tickFormatter={(value) => `$${value / 1000}k`} />
+            <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+            <XAxis
+              dataKey="month"
+              tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+            />
+            <YAxis
+              tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+              tickFormatter={(value) => `$${value / 1000}k`}
+            />
             <Tooltip
               contentStyle={{
-                backgroundColor: "hsl(var(--card))",
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "8px",
+                backgroundColor: theme.palette.background.paper,
+                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: 8,
               }}
               formatter={(value: number) => [`$${value.toLocaleString()}`, ""]}
             />
             <Legend />
-            <Bar dataKey="billed" name="Billed" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="paid" name="Paid" fill="hsl(var(--success))" radius={[4, 4, 0, 0]} />
+            <Bar
+              dataKey="billed"
+              name="Billed"
+              fill={theme.palette.primary.main}
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="paid"
+              name="Paid"
+              fill={theme.palette.success.main}
+              radius={[4, 4, 0, 0]}
+            />
           </BarChart>
         </ResponsiveContainer>
-      </div>
+      </Box>
     </ChartCard>
   );
 };

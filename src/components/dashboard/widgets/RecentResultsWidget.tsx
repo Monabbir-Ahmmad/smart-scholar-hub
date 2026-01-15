@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
-import { FileText, CheckCircle, Trophy, TrendingUp, TrendingDown } from "lucide-react";
+import { useTheme, alpha } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import { FileText, TrendingUp, TrendingDown } from "lucide-react";
 import { ChartCard } from "../ChartCard";
 
 interface Result {
@@ -51,69 +54,107 @@ const results: Result[] = [
   },
 ];
 
-const getScoreColor = (score: number) => {
-  if (score >= 90) return "text-success";
-  if (score >= 75) return "text-primary";
-  if (score >= 60) return "text-accent";
-  return "text-destructive";
-};
-
-const getScoreBg = (score: number) => {
-  if (score >= 90) return "bg-success/10";
-  if (score >= 75) return "bg-primary/10";
-  if (score >= 60) return "bg-accent/10";
-  return "bg-destructive/10";
-};
-
 interface RecentResultsWidgetProps {
   delay?: number;
 }
 
 export const RecentResultsWidget = ({ delay = 0 }: RecentResultsWidgetProps) => {
+  const theme = useTheme();
+
+  const getScoreColor = (score: number) => {
+    if (score >= 90) return theme.palette.success.main;
+    if (score >= 75) return theme.palette.primary.main;
+    if (score >= 60) return theme.palette.warning.main;
+    return theme.palette.error.main;
+  };
+
   return (
     <ChartCard
       title="Recent Results"
       subtitle="Your latest coursework scores"
       delay={delay}
     >
-      <div className="space-y-3">
-        {results.map((result, index) => (
-          <motion.div
-            key={result.id}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: delay + index * 0.08, duration: 0.4 }}
-            className="flex items-center gap-4 p-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors group"
-          >
-            <div className={`p-2.5 rounded-lg ${getScoreBg(result.score)}`}>
-              <FileText className={`w-5 h-5 ${getScoreColor(result.score)}`} />
-            </div>
-            
-            <div className="flex-1 min-w-0">
-              <h4 className="font-medium text-foreground truncate group-hover:text-primary transition-colors">
-                {result.title}
-              </h4>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>{result.subject}</span>
-                <span>•</span>
-                <span>{result.date}</span>
-              </div>
-            </div>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+        {results.map((result, index) => {
+          const scoreColor = getScoreColor(result.score);
+          return (
+            <motion.div
+              key={result.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: delay + index * 0.08, duration: 0.4 }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  p: 1.5,
+                  borderRadius: 3,
+                  bgcolor: alpha(theme.palette.muted, 0.5),
+                  transition: "background-color 0.2s",
+                  "&:hover": {
+                    bgcolor: theme.palette.muted,
+                  },
+                  "&:hover .result-title": {
+                    color: theme.palette.primary.main,
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    p: 1.25,
+                    borderRadius: 2,
+                    bgcolor: alpha(scoreColor, 0.1),
+                  }}
+                >
+                  <FileText style={{ width: 20, height: 20, color: scoreColor }} />
+                </Box>
+                
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Typography
+                    className="result-title"
+                    variant="body2"
+                    sx={{
+                      fontWeight: 500,
+                      color: "text.primary",
+                      transition: "color 0.2s",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {result.title}
+                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: "text.secondary", fontSize: "0.875rem" }}>
+                    <span>{result.subject}</span>
+                    <span>•</span>
+                    <span>{result.date}</span>
+                  </Box>
+                </Box>
 
-            <div className="flex items-center gap-2">
-              {result.trend === "up" && (
-                <TrendingUp className="w-4 h-4 text-success" />
-              )}
-              {result.trend === "down" && (
-                <TrendingDown className="w-4 h-4 text-destructive" />
-              )}
-              <div className={`text-xl font-bold ${getScoreColor(result.score)}`}>
-                {result.score}%
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  {result.trend === "up" && (
+                    <TrendingUp style={{ width: 16, height: 16, color: theme.palette.success.main }} />
+                  )}
+                  {result.trend === "down" && (
+                    <TrendingDown style={{ width: 16, height: 16, color: theme.palette.error.main }} />
+                  )}
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 700,
+                      color: scoreColor,
+                    }}
+                  >
+                    {result.score}%
+                  </Typography>
+                </Box>
+              </Box>
+            </motion.div>
+          );
+        })}
+      </Box>
     </ChartCard>
   );
 };
