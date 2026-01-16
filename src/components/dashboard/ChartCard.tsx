@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
-import { motion } from "framer-motion";
-import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import { motion } from "framer-motion";
+import { ReactNode } from "react";
 
 interface ChartCardProps {
   title: string;
@@ -48,9 +48,18 @@ export const ChartCard = ({
             pb: 1,
           }}
           title={
-            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <Box>
-                <Typography variant="h6" sx={{ fontSize: "1.125rem", fontWeight: 600 }}>
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: "1.125rem", fontWeight: 600 }}
+                >
                   {title}
                 </Typography>
                 {subtitle && (
