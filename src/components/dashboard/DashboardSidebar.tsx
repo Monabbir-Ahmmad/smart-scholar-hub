@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import {
   LayoutDashboard,
   Users,
@@ -14,8 +18,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
 const menuItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
@@ -31,74 +33,138 @@ const menuItems = [
 export const DashboardSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const theme = useTheme();
 
   return (
     <motion.aside
       initial={{ x: -20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      className={cn(
-        "fixed left-0 top-0 h-full bg-card border-r z-40 transition-all duration-300",
-        collapsed ? "w-16" : "w-64"
-      )}
+      style={{
+        position: "fixed",
+        left: 0,
+        top: 0,
+        height: "100%",
+        backgroundColor: theme.palette.background.paper,
+        borderRight: `1px solid ${theme.palette.divider}`,
+        zIndex: 40,
+        transition: "width 0.3s ease",
+        width: collapsed ? 64 : 256,
+      }}
     >
-      <div className="flex flex-col h-full">
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
         {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-4 border-b">
+        <Box
+          sx={{
+            height: 64,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            px: 2,
+            borderBottom: `1px solid ${theme.palette.divider}`,
+          }}
+        >
           {!collapsed && (
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                <GraduationCap className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="font-bold text-lg">EduPlatform</span>
+            <Link to="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+              <Box
+                sx={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 2,
+                  bgcolor: "primary.main",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <GraduationCap style={{ width: 20, height: 20, color: theme.palette.primary.contrastText }} />
+              </Box>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: "text.primary" }}>
+                EduPlatform
+              </Typography>
             </Link>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
+          <IconButton
             onClick={() => setCollapsed(!collapsed)}
-            className="h-8 w-8"
+            size="small"
+            sx={{ width: 32, height: 32 }}
           >
             {collapsed ? (
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight style={{ width: 16, height: 16 }} />
             ) : (
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft style={{ width: 16, height: 16 }} />
             )}
-          </Button>
-        </div>
+          </IconButton>
+        </Box>
 
         {/* Navigation */}
-        <nav className="flex-1 p-3 space-y-1">
+        <Box component="nav" sx={{ flex: 1, p: 1.5 }}>
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
-                  isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                )}
+                style={{ textDecoration: "none" }}
               >
-                <item.icon className="h-5 w-5 flex-shrink-0" />
-                {!collapsed && <span className="text-sm font-medium">{item.label}</span>}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1.5,
+                    px: 1.5,
+                    py: 1.25,
+                    borderRadius: 2,
+                    mb: 0.5,
+                    transition: "all 0.2s",
+                    bgcolor: isActive ? "primary.main" : "transparent",
+                    color: isActive ? "primary.contrastText" : "text.secondary",
+                    "&:hover": {
+                      bgcolor: isActive ? "primary.main" : theme.palette.muted,
+                      color: isActive ? "primary.contrastText" : "text.primary",
+                    },
+                  }}
+                >
+                  <item.icon style={{ width: 20, height: 20, flexShrink: 0 }} />
+                  {!collapsed && (
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      {item.label}
+                    </Typography>
+                  )}
+                </Box>
               </Link>
             );
           })}
-        </nav>
+        </Box>
 
         {/* Logout */}
-        <div className="p-3 border-t">
-          <Link
-            to="/"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-          >
-            <LogOut className="h-5 w-5 flex-shrink-0" />
-            {!collapsed && <span className="text-sm font-medium">Back to Home</span>}
+        <Box sx={{ p: 1.5, borderTop: `1px solid ${theme.palette.divider}` }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+                px: 1.5,
+                py: 1.25,
+                borderRadius: 2,
+                color: "text.secondary",
+                transition: "all 0.2s",
+                "&:hover": {
+                  bgcolor: theme.palette.muted,
+                  color: "text.primary",
+                },
+              }}
+            >
+              <LogOut style={{ width: 20, height: 20, flexShrink: 0 }} />
+              {!collapsed && (
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  Back to Home
+                </Typography>
+              )}
+            </Box>
           </Link>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </motion.aside>
   );
 };

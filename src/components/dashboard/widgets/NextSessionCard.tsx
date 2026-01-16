@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { useTheme, alpha } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { Video, Clock, User, ArrowRight, Calendar } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { format, addHours } from "date-fns";
 
 const nextSession = {
@@ -17,60 +20,126 @@ interface NextSessionCardProps {
 }
 
 export const NextSessionCard = ({ delay = 0 }: NextSessionCardProps) => {
+  const theme = useTheme();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5 }}
-      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-secondary p-6 text-primary-foreground"
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 16,
+        background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+        padding: 24,
+        color: theme.palette.primary.contrastText,
+      }}
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
-      </div>
+      <Box sx={{ position: "absolute", inset: 0, opacity: 0.1 }}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: 256,
+            height: 256,
+            bgcolor: "white",
+            borderRadius: "50%",
+            transform: "translate(50%, -50%)",
+          }}
+        />
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: 192,
+            height: 192,
+            bgcolor: "white",
+            borderRadius: "50%",
+            transform: "translate(-50%, 50%)",
+          }}
+        />
+      </Box>
 
-      <div className="relative z-10 space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-              <Video className="w-5 h-5" />
-            </div>
-            <span className="text-sm font-medium opacity-90">Next Session</span>
-          </div>
-          <div className="flex items-center gap-1 text-sm bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
-            <Clock className="w-4 h-4" />
+      <Box sx={{ position: "relative", zIndex: 10, display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box
+              sx={{
+                p: 1,
+                bgcolor: alpha("#FFFFFF", 0.2),
+                borderRadius: 2,
+                backdropFilter: "blur(8px)",
+                display: "flex",
+              }}
+            >
+              <Video style={{ width: 20, height: 20 }} />
+            </Box>
+            <Typography variant="body2" sx={{ fontWeight: 500, opacity: 0.9 }}>
+              Next Session
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.5,
+              fontSize: "0.875rem",
+              bgcolor: alpha("#FFFFFF", 0.2),
+              px: 1.5,
+              py: 0.5,
+              borderRadius: 10,
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <Clock style={{ width: 16, height: 16 }} />
             <span>In 2 hours</span>
-          </div>
-        </div>
+          </Box>
+        </Box>
 
-        <div>
-          <h3 className="text-xl font-bold mb-1">{nextSession.title}</h3>
-          <p className="text-sm opacity-80">{nextSession.courseTitle}</p>
-        </div>
+        <Box>
+          <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
+            {nextSession.title}
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.8 }}>
+            {nextSession.courseTitle}
+          </Typography>
+        </Box>
 
-        <div className="flex items-center gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <User className="w-4 h-4 opacity-70" />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2, fontSize: "0.875rem" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <User style={{ width: 16, height: 16, opacity: 0.7 }} />
             <span>{nextSession.teacher}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 opacity-70" />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Calendar style={{ width: 16, height: 16, opacity: 0.7 }} />
             <span>{format(nextSession.scheduledAt, "h:mm a")}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 opacity-70" />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Clock style={{ width: 16, height: 16, opacity: 0.7 }} />
             <span>{nextSession.duration} min</span>
-          </div>
-        </div>
+          </Box>
+        </Box>
 
-        <Button 
-          className="w-full bg-white text-primary hover:bg-white/90 font-semibold group"
+        <Button
+          variant="contained"
+          fullWidth
+          endIcon={<ArrowRight style={{ width: 16, height: 16 }} />}
+          sx={{
+            bgcolor: "white",
+            color: "primary.main",
+            fontWeight: 600,
+            "&:hover": {
+              bgcolor: alpha("#FFFFFF", 0.9),
+            },
+          }}
         >
           Join Session
-          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
         </Button>
-      </div>
+      </Box>
     </motion.div>
   );
 };

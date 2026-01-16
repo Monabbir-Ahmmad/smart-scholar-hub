@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
-import { FileText, Clock, AlertCircle, CheckCircle2, Calendar } from "lucide-react";
+import { useTheme, alpha } from "@mui/material/styles";
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import { Clock, AlertCircle, CheckCircle2, Calendar } from "lucide-react";
 import { ChartCard } from "../ChartCard";
-import { Badge } from "@/components/ui/badge";
 import { format, formatDistanceToNow, addDays, addHours } from "date-fns";
 
 interface Assignment {
@@ -64,90 +67,136 @@ const assignments: Assignment[] = [
   },
 ];
 
-const getTypeStyles = (type: Assignment["type"]) => {
-  switch (type) {
-    case "quiz":
-      return "bg-primary/10 text-primary";
-    case "homework":
-      return "bg-secondary/10 text-secondary";
-    case "exam":
-      return "bg-destructive/10 text-destructive";
-    case "project":
-      return "bg-success/10 text-success";
-  }
-};
-
-const getPriorityStyles = (priority: Assignment["priority"]) => {
-  switch (priority) {
-    case "high":
-      return "border-l-destructive";
-    case "medium":
-      return "border-l-accent";
-    case "low":
-      return "border-l-success";
-  }
-};
-
-const getStatusIcon = (status: Assignment["status"]) => {
-  switch (status) {
-    case "pending":
-      return <Clock className="w-4 h-4 text-muted-foreground" />;
-    case "in_progress":
-      return <AlertCircle className="w-4 h-4 text-accent" />;
-    case "submitted":
-      return <CheckCircle2 className="w-4 h-4 text-success" />;
-  }
-};
-
 interface UpcomingAssignmentsProps {
   delay?: number;
 }
 
 export const UpcomingAssignments = ({ delay = 0 }: UpcomingAssignmentsProps) => {
+  const theme = useTheme();
+
+  const getTypeColor = (type: Assignment["type"]) => {
+    switch (type) {
+      case "quiz":
+        return { bgcolor: alpha(theme.palette.primary.main, 0.1), color: theme.palette.primary.main };
+      case "homework":
+        return { bgcolor: alpha(theme.palette.secondary.main, 0.1), color: theme.palette.secondary.main };
+      case "exam":
+        return { bgcolor: alpha(theme.palette.error.main, 0.1), color: theme.palette.error.main };
+      case "project":
+        return { bgcolor: alpha(theme.palette.success.main, 0.1), color: theme.palette.success.main };
+    }
+  };
+
+  const getPriorityBorderColor = (priority: Assignment["priority"]) => {
+    switch (priority) {
+      case "high":
+        return theme.palette.error.main;
+      case "medium":
+        return theme.palette.warning.main;
+      case "low":
+        return theme.palette.success.main;
+    }
+  };
+
+  const getStatusIcon = (status: Assignment["status"]) => {
+    switch (status) {
+      case "pending":
+        return <Clock style={{ width: 16, height: 16, color: theme.palette.text.secondary }} />;
+      case "in_progress":
+        return <AlertCircle style={{ width: 16, height: 16, color: theme.palette.warning.main }} />;
+      case "submitted":
+        return <CheckCircle2 style={{ width: 16, height: 16, color: theme.palette.success.main }} />;
+    }
+  };
+
   return (
     <ChartCard
       title="Upcoming Assignments"
       subtitle="Deadlines and coursework to complete"
       delay={delay}
     >
-      <div className="space-y-3">
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
         {assignments.map((assignment, index) => (
           <motion.div
             key={assignment.id}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: delay + index * 0.08, duration: 0.4 }}
-            className={`p-4 rounded-xl bg-muted/50 border-l-4 ${getPriorityStyles(assignment.priority)} hover:bg-muted transition-colors group cursor-pointer`}
           >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-start gap-3 flex-1">
-                <div className="mt-0.5">
-                  {getStatusIcon(assignment.status)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors truncate">
-                    {assignment.title}
-                  </h4>
-                  <p className="text-sm text-muted-foreground">{assignment.subject}</p>
-                </div>
-              </div>
-              <Badge variant="secondary" className={getTypeStyles(assignment.type)}>
-                {assignment.type}
-              </Badge>
-            </div>
-            
-            <div className="flex items-center gap-2 mt-3 text-sm">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
-              <span className="text-muted-foreground">
-                {format(assignment.dueDate, "MMM d, yyyy 'at' h:mm a")}
-              </span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                {formatDistanceToNow(assignment.dueDate, { addSuffix: true })}
-              </span>
-            </div>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 3,
+                bgcolor: alpha(theme.palette.muted, 0.5),
+                borderLeft: `4px solid ${getPriorityBorderColor(assignment.priority)}`,
+                transition: "background-color 0.2s",
+                cursor: "pointer",
+                "&:hover": {
+                  bgcolor: theme.palette.muted,
+                },
+                "&:hover .assignment-title": {
+                  color: theme.palette.primary.main,
+                },
+              }}
+            >
+              <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 1.5 }}>
+                <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1.5, flex: 1 }}>
+                  <Box sx={{ mt: 0.25 }}>
+                    {getStatusIcon(assignment.status)}
+                  </Box>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography
+                      className="assignment-title"
+                      variant="body2"
+                      sx={{
+                        fontWeight: 600,
+                        color: "text.primary",
+                        transition: "color 0.2s",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {assignment.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                      {assignment.subject}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Chip
+                  label={assignment.type}
+                  size="small"
+                  sx={{
+                    height: 24,
+                    fontSize: "0.75rem",
+                    ...getTypeColor(assignment.type),
+                  }}
+                />
+              </Box>
+              
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1.5, fontSize: "0.875rem" }}>
+                <Calendar style={{ width: 16, height: 16, color: theme.palette.text.secondary }} />
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  {format(assignment.dueDate, "MMM d, yyyy 'at' h:mm a")}
+                </Typography>
+                <Box
+                  sx={{
+                    fontSize: "0.75rem",
+                    px: 1,
+                    py: 0.25,
+                    borderRadius: 10,
+                    bgcolor: theme.palette.muted,
+                    color: "text.secondary",
+                  }}
+                >
+                  {formatDistanceToNow(assignment.dueDate, { addSuffix: true })}
+                </Box>
+              </Box>
+            </Box>
           </motion.div>
         ))}
-      </div>
+      </Box>
     </ChartCard>
   );
 };

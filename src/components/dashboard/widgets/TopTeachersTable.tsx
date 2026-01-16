@@ -1,7 +1,10 @@
+import { useTheme, alpha } from "@mui/material/styles";
+import Avatar from "@mui/material/Avatar";
+import Chip from "@mui/material/Chip";
+import LinearProgress from "@mui/material/LinearProgress";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 
 const teachers = [
   { name: "Dr. Sarah Chen", subject: "Mathematics", sessions: 142, rating: 4.9, completion: 98 },
@@ -12,42 +15,81 @@ const teachers = [
 ];
 
 export const TopTeachersTable = ({ delay = 0 }: { delay?: number }) => {
+  const theme = useTheme();
+
   return (
     <ChartCard
       title="Top Teachers"
       subtitle="By completed sessions this month"
       delay={delay}
     >
-      <div className="space-y-4">
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {teachers.map((teacher, index) => (
-          <div key={teacher.name} className="flex items-center gap-4">
-            <span className="text-sm font-medium text-muted-foreground w-4">
+          <Box key={teacher.name} sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 500, color: "text.secondary", width: 16 }}
+            >
               {index + 1}
-            </span>
-            <Avatar className="h-10 w-10">
-              <AvatarFallback className="bg-primary/10 text-primary font-medium">
-                {teacher.name.split(" ").map(n => n[0]).join("")}
-              </AvatarFallback>
+            </Typography>
+            <Avatar
+              sx={{
+                width: 40,
+                height: 40,
+                bgcolor: alpha(theme.palette.primary.main, 0.1),
+                color: "primary.main",
+                fontWeight: 500,
+                fontSize: "0.875rem",
+              }}
+            >
+              {teacher.name.split(" ").map(n => n[0]).join("")}
             </Avatar>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-medium truncate">{teacher.name}</p>
-                <Badge variant="secondary" className="text-xs">
-                  {teacher.subject}
-                </Badge>
-              </div>
-              <div className="flex items-center gap-2 mt-1">
-                <Progress value={teacher.completion} className="h-1.5 flex-1" />
-                <span className="text-xs text-muted-foreground">{teacher.completion}%</span>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-sm font-semibold">{teacher.sessions}</p>
-              <p className="text-xs text-muted-foreground">sessions</p>
-            </div>
-          </div>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                >
+                  {teacher.name}
+                </Typography>
+                <Chip
+                  label={teacher.subject}
+                  size="small"
+                  sx={{
+                    height: 22,
+                    fontSize: "0.75rem",
+                    bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                    color: "secondary.main",
+                  }}
+                />
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 0.5 }}>
+                <LinearProgress
+                  variant="determinate"
+                  value={teacher.completion}
+                  sx={{
+                    flex: 1,
+                    height: 6,
+                    borderRadius: 1,
+                    bgcolor: theme.palette.muted,
+                  }}
+                />
+                <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                  {teacher.completion}%
+                </Typography>
+              </Box>
+            </Box>
+            <Box sx={{ textAlign: "right" }}>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                {teacher.sessions}
+              </Typography>
+              <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                sessions
+              </Typography>
+            </Box>
+          </Box>
         ))}
-      </div>
+      </Box>
     </ChartCard>
   );
 };

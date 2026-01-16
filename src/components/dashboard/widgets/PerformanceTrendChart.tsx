@@ -1,6 +1,7 @@
-import { motion } from "framer-motion";
+import { useTheme, alpha } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import {
-  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -37,73 +38,101 @@ interface PerformanceTrendChartProps {
 }
 
 export const PerformanceTrendChart = ({ delay = 0 }: PerformanceTrendChartProps) => {
+  const theme = useTheme();
+
   return (
     <ChartCard
       title="Performance Trend"
       subtitle="Your coursework scores over time"
       delay={delay}
     >
-      <div className="space-y-4">
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {/* Summary Stats */}
-        <div className="flex items-center justify-between p-4 rounded-xl bg-muted/50">
-          <div>
-            <p className="text-sm text-muted-foreground">Current Score</p>
-            <p className="text-3xl font-bold text-foreground">{currentScore}%</p>
-          </div>
-          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${
-            improvement >= 0 
-              ? "bg-success/10 text-success" 
-              : "bg-destructive/10 text-destructive"
-          }`}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            p: 2,
+            borderRadius: 3,
+            bgcolor: alpha(theme.palette.muted, 0.5),
+          }}
+        >
+          <Box>
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              Current Score
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: 700, color: "text.primary" }}>
+              {currentScore}%
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              px: 1.5,
+              py: 0.75,
+              borderRadius: 10,
+              bgcolor: improvement >= 0 
+                ? alpha(theme.palette.success.main, 0.1)
+                : alpha(theme.palette.error.main, 0.1),
+              color: improvement >= 0 
+                ? theme.palette.success.main
+                : theme.palette.error.main,
+            }}
+          >
             {improvement >= 0 ? (
-              <TrendingUp className="w-4 h-4" />
+              <TrendingUp style={{ width: 16, height: 16 }} />
             ) : (
-              <TrendingDown className="w-4 h-4" />
+              <TrendingDown style={{ width: 16, height: 16 }} />
             )}
-            <span className="font-medium">{improvement >= 0 ? "+" : ""}{improvement}%</span>
-          </div>
-        </div>
+            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+              {improvement >= 0 ? "+" : ""}{improvement}%
+            </Typography>
+          </Box>
+        </Box>
 
         {/* Chart */}
-        <div className="h-[200px]">
+        <Box sx={{ height: 200 }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={performanceData}>
               <defs>
                 <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  <stop offset="5%" stopColor={theme.palette.primary.main} stopOpacity={0.3} />
+                  <stop offset="95%" stopColor={theme.palette.primary.main} stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid 
                 strokeDasharray="3 3" 
-                stroke="hsl(var(--border))" 
+                stroke={theme.palette.divider}
                 vertical={false}
               />
               <XAxis 
                 dataKey="week" 
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
-                axisLine={{ stroke: "hsl(var(--border))" }}
+                tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+                axisLine={{ stroke: theme.palette.divider }}
                 tickLine={false}
               />
               <YAxis 
                 domain={[60, 100]}
-                tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
-                axisLine={{ stroke: "hsl(var(--border))" }}
+                tick={{ fill: theme.palette.text.secondary, fontSize: 12 }}
+                axisLine={{ stroke: theme.palette.divider }}
                 tickLine={false}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "hsl(var(--card))",
-                  border: "1px solid hsl(var(--border))",
-                  borderRadius: "12px",
-                  boxShadow: "var(--shadow-lg)",
+                  backgroundColor: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.divider}`,
+                  borderRadius: 12,
+                  boxShadow: theme.shadows[5],
                 }}
-                labelStyle={{ color: "hsl(var(--foreground))", fontWeight: 600 }}
+                labelStyle={{ color: theme.palette.text.primary, fontWeight: 600 }}
               />
               <Area
                 type="monotone"
                 dataKey="score"
-                stroke="hsl(var(--primary))"
+                stroke={theme.palette.primary.main}
                 strokeWidth={3}
                 fill="url(#scoreGradient)"
                 name="Your Score"
@@ -111,7 +140,7 @@ export const PerformanceTrendChart = ({ delay = 0 }: PerformanceTrendChartProps)
               <Line
                 type="monotone"
                 dataKey="average"
-                stroke="hsl(var(--muted-foreground))"
+                stroke={theme.palette.text.secondary}
                 strokeWidth={2}
                 strokeDasharray="5 5"
                 dot={false}
@@ -119,20 +148,24 @@ export const PerformanceTrendChart = ({ delay = 0 }: PerformanceTrendChartProps)
               />
             </AreaChart>
           </ResponsiveContainer>
-        </div>
+        </Box>
 
         {/* Legend */}
-        <div className="flex items-center justify-center gap-6 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-primary" />
-            <span className="text-muted-foreground">Your Score</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-0.5 bg-muted-foreground" style={{ borderStyle: "dashed" }} />
-            <span className="text-muted-foreground">Class Average</span>
-          </div>
-        </div>
-      </div>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 3 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box sx={{ width: 12, height: 12, borderRadius: "50%", bgcolor: "primary.main" }} />
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              Your Score
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box sx={{ width: 12, height: 2, bgcolor: "text.secondary", borderStyle: "dashed" }} />
+            <Typography variant="body2" sx={{ color: "text.secondary" }}>
+              Class Average
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
     </ChartCard>
   );
 };
