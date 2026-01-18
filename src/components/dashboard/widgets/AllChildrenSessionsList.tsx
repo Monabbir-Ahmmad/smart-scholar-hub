@@ -93,73 +93,86 @@ export const AllChildrenSessionsList = () => {
 
   return (
     <ChartCard title="Upcoming Sessions" subtitle="All children's scheduled sessions">
-      <List sx={{ py: 0 }}>
-        {upcomingSessions.map((session, index) => (
-          <Box key={session.id}>
-            <ListItem
-              sx={{
-                px: 0,
-                py: 1.5,
-                bgcolor: session.isToday ? "action.selected" : "transparent",
-                borderRadius: 2,
-                mb: 0.5,
-              }}
-            >
-              <ListItemAvatar>
-                <Avatar
-                  sx={{
-                    bgcolor: childColors[session.childAvatar],
-                    width: 44,
-                    height: 44,
-                  }}
-                >
-                  {session.childAvatar}
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                      {session.subject}
-                    </Typography>
-                    {session.isToday && (
-                      <Chip
-                        label="Today"
-                        size="small"
-                        color="primary"
-                        sx={{ height: 20, fontSize: "0.7rem" }}
-                      />
-                    )}
-                  </Box>
-                }
-                secondary={
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 0.5 }}>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <PersonIcon sx={{ fontSize: 14, mr: 0.5, color: "text.secondary" }} />
-                      <Typography variant="caption" color="text.secondary">
-                        {session.child} • {session.teacher}
+      <Box sx={{ maxHeight: 420, overflowY: "auto", pr: 1 }}>
+        <List sx={{ py: 0 }}>
+          {upcomingSessions.map((session, index) => (
+            <Box key={session.id}>
+              <ListItem
+                sx={{
+                  px: 1.5,
+                  py: 1.5,
+                  bgcolor: session.isToday ? `${childColors[session.childAvatar]}10` : "transparent",
+                  borderRadius: 2,
+                  mb: 0.5,
+                  border: session.isToday ? `1px solid ${childColors[session.childAvatar]}30` : "1px solid transparent",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    bgcolor: session.isToday ? `${childColors[session.childAvatar]}15` : "action.hover",
+                  },
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    sx={{
+                      bgcolor: childColors[session.childAvatar],
+                      width: 44,
+                      height: 44,
+                      fontWeight: 700,
+                    }}
+                  >
+                    {session.childAvatar}
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                        {session.subject}
                       </Typography>
+                      {session.isToday && (
+                        <Chip
+                          label="Today"
+                          size="small"
+                          sx={{
+                            height: 20,
+                            fontSize: "0.65rem",
+                            fontWeight: 700,
+                            bgcolor: childColors[session.childAvatar],
+                            color: "white",
+                          }}
+                        />
+                      )}
                     </Box>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <EventIcon sx={{ fontSize: 14, mr: 0.5, color: "text.secondary" }} />
-                      <Typography variant="caption" color="text.secondary">
-                        {session.date}
-                      </Typography>
+                  }
+                  secondary={
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 0.5 }}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <PersonIcon sx={{ fontSize: 14, mr: 0.5, color: "text.secondary" }} />
+                        <Typography variant="caption" color="text.secondary">
+                          {session.child} • {session.teacher}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <EventIcon sx={{ fontSize: 14, mr: 0.5, color: "text.secondary" }} />
+                        <Typography variant="caption" color="text.secondary">
+                          {session.date}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <AccessTimeIcon sx={{ fontSize: 14, mr: 0.5, color: "text.secondary" }} />
+                        <Typography variant="caption" color="text.secondary">
+                          {session.time} ({session.duration})
+                        </Typography>
+                      </Box>
                     </Box>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <AccessTimeIcon sx={{ fontSize: 14, mr: 0.5, color: "text.secondary" }} />
-                      <Typography variant="caption" color="text.secondary">
-                        {session.time} ({session.duration})
-                      </Typography>
-                    </Box>
-                  </Box>
-                }
-              />
-            </ListItem>
-            {index < upcomingSessions.length - 1 && <Divider component="li" />}
-          </Box>
-        ))}
-      </List>
+                  }
+                />
+              </ListItem>
+              {index < upcomingSessions.length - 1 && <Divider component="li" sx={{ my: 0.5 }} />}
+            </Box>
+          ))}
+        </List>
+      </Box>
     </ChartCard>
   );
 };
