@@ -16,6 +16,8 @@ import { Bell, Search } from "lucide-react";
 interface DashboardHeaderProps {
   title: string;
   subtitle?: string;
+  userName?: string;
+  userInitials?: string;
 }
 
 const notifications = [
@@ -33,7 +35,12 @@ const notifications = [
   },
 ];
 
-export const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
+export const DashboardHeader = ({ 
+  title, 
+  subtitle, 
+  userName = "User",
+  userInitials = "U"
+}: DashboardHeaderProps) => {
   const theme = useTheme();
   const [notificationAnchor, setNotificationAnchor] = useState<null | HTMLElement>(null);
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null);
@@ -166,7 +173,7 @@ export const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
               fontWeight: 600,
             }}
           >
-            AD
+            {userInitials}
           </Avatar>
           <Typography
             variant="body2"
@@ -176,7 +183,7 @@ export const DashboardHeader = ({ title, subtitle }: DashboardHeaderProps) => {
               color: "text.primary",
             }}
           >
-            Admin
+            {userName}
           </Typography>
         </IconButton>
         <Menu

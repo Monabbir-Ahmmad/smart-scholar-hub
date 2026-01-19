@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { 
   Users, 
   GraduationCap, 
@@ -7,9 +6,12 @@ import {
   FileQuestion,
   Calendar,
   TrendingUp,
-  CheckCircle
+  CheckCircle,
+  LayoutDashboard,
+  CreditCard,
+  Settings
 } from "lucide-react";
-import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { DashboardSidebar, MenuItem } from "@/components/dashboard/DashboardSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { UserGrowthChart } from "@/components/dashboard/widgets/UserGrowthChart";
@@ -22,6 +24,20 @@ import { LessonContentStats } from "@/components/dashboard/widgets/LessonContent
 import { PerformanceDistribution } from "@/components/dashboard/widgets/PerformanceDistribution";
 import { UnpaidBillsTable } from "@/components/dashboard/widgets/UnpaidBillsTable";
 import { RecentActivityFeed } from "@/components/dashboard/widgets/RecentActivityFeed";
+
+const menuItems: MenuItem[] = [
+  { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
+  { label: "Users", icon: Users, path: "/admin/users" },
+  { label: "Enrollments", icon: GraduationCap, path: "/admin/enrollments" },
+  { label: "Courses", icon: BookOpen, path: "/admin/courses" },
+  { label: "Question Bank", icon: FileQuestion, path: "/admin/questions" },
+  { label: "Sessions", icon: Calendar, path: "/admin/sessions" },
+  { label: "Billing", icon: CreditCard, path: "/admin/billing" },
+];
+
+const bottomItems: MenuItem[] = [
+  { label: "Settings", icon: Settings, path: "/admin/settings" },
+];
 
 const stats = [
   {
@@ -85,12 +101,18 @@ const stats = [
 const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-background">
-      <DashboardSidebar />
+      <DashboardSidebar 
+        menuItems={menuItems}
+        bottomItems={bottomItems}
+        title="EduPlatform"
+      />
       
       <div className="ml-64 transition-all duration-300">
         <DashboardHeader 
           title="Admin Dashboard" 
           subtitle="Welcome back! Here's what's happening today."
+          userName="Admin"
+          userInitials="AD"
         />
         
         <main className="p-6 space-y-6">
