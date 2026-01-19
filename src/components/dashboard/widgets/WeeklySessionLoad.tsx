@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from "react";
 import { useTheme, alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -12,22 +13,25 @@ import {
   ResponsiveContainer,
   Cell
 } from "recharts";
-
-const weeklyData = [
-  { day: "Mon", sessions: 4, hours: 4 },
-  { day: "Tue", sessions: 6, hours: 5.5 },
-  { day: "Wed", sessions: 3, hours: 2.5 },
-  { day: "Thu", sessions: 5, hours: 4.5 },
-  { day: "Fri", sessions: 7, hours: 6 },
-  { day: "Sat", sessions: 2, hours: 1.5 },
-  { day: "Sun", sessions: 0, hours: 0 },
-];
+import { getWeeklySessionLoad, type WeeklySessionData } from "@/services";
 
 export const WeeklySessionLoad = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [weeklyData, setWeeklyData] = useState<WeeklySessionData[]>([]);
+
+  useEffect(() => {
+    getWeeklySessionLoad().then(setWeeklyData);
+  }, []);
 
   const todayIndex = new Date().getDay();
   const adjustedTodayIndex = todayIndex === 0 ? 6 : todayIndex - 1; // Adjust for Mon-Sun array
+
+  const { totalSessions, totalHours } = useMemo(() => {
+    return {
+      totalSessions: weeklyData.reduce((acc, d) => acc + d.sessions, 0),
+      totalHours: weeklyData.reduce((acc, d) => acc + d.hours, 0),
+    };
+  }, [weeklyData]);
 
   return (
     <ChartCard
@@ -38,7 +42,7 @@ export const WeeklySessionLoad = ({ delay = 0 }: { delay?: number }) => {
       <Box sx={{ display: "flex", gap: 3, mb: 3 }}>
         <Box>
           <Typography variant="h4" sx={{ fontWeight: 700, color: "text.primary" }}>
-            27
+            {totalSessions}
           </Typography>
           <Typography variant="caption" sx={{ color: "text.secondary" }}>
             Total sessions this week
@@ -46,7 +50,7 @@ export const WeeklySessionLoad = ({ delay = 0 }: { delay?: number }) => {
         </Box>
         <Box>
           <Typography variant="h4" sx={{ fontWeight: 700, color: "primary.main" }}>
-            24h
+            {totalHours}h
           </Typography>
           <Typography variant="caption" sx={{ color: "text.secondary" }}>
             Total teaching hours

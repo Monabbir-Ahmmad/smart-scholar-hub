@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useTheme, alpha } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
@@ -5,17 +6,15 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
-
-const teachers = [
-  { name: "Dr. Sarah Chen", subject: "Mathematics", sessions: 142, rating: 4.9, completion: 98 },
-  { name: "Prof. James Wilson", subject: "Physics", sessions: 128, rating: 4.8, completion: 96 },
-  { name: "Ms. Emily Rodriguez", subject: "Chemistry", sessions: 115, rating: 4.9, completion: 97 },
-  { name: "Mr. David Kim", subject: "Biology", sessions: 98, rating: 4.7, completion: 94 },
-  { name: "Dr. Lisa Thompson", subject: "English", sessions: 87, rating: 4.8, completion: 95 },
-];
+import { getTopTeachers, type TopTeacherData } from "@/services";
 
 export const TopTeachersTable = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [teachers, setTeachers] = useState<TopTeacherData[]>([]);
+
+  useEffect(() => {
+    getTopTeachers().then(setTeachers);
+  }, []);
 
   return (
     <ChartCard

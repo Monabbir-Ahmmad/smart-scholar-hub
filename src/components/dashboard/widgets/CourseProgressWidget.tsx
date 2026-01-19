@@ -1,20 +1,11 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTheme, alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { BookOpen, CheckCircle } from "lucide-react";
 import { ChartCard } from "../ChartCard";
-
-interface Course {
-  id: string;
-  title: string;
-  teacher: string;
-  progress: number;
-  completedSessions: number;
-  totalSessions: number;
-  status: "in_progress" | "completed" | "upcoming";
-  colorKey: "primary" | "secondary" | "success" | "warning";
-}
+import { getCourseProgress, type CourseProgress } from "@/services";
 
 interface CourseProgressWidgetProps {
   delay?: number;
@@ -22,51 +13,17 @@ interface CourseProgressWidgetProps {
 
 export const CourseProgressWidget = ({ delay = 0 }: CourseProgressWidgetProps) => {
   const theme = useTheme();
+  const [courses, setCourses] = useState<CourseProgress[]>([]);
 
-  const courses: Course[] = [
-    {
-      id: "1",
-      title: "Advanced Mathematics",
-      teacher: "Dr. Sarah Chen",
-      progress: 75,
-      completedSessions: 15,
-      totalSessions: 20,
-      status: "in_progress",
-      colorKey: "primary",
-    },
-    {
-      id: "2",
-      title: "Physics Fundamentals",
-      teacher: "Prof. James Wilson",
-      progress: 60,
-      completedSessions: 12,
-      totalSessions: 20,
-      status: "in_progress",
-      colorKey: "secondary",
-    },
-    {
-      id: "3",
-      title: "English Literature",
-      teacher: "Ms. Emily Parker",
-      progress: 90,
-      completedSessions: 18,
-      totalSessions: 20,
-      status: "in_progress",
-      colorKey: "success",
-    },
-    {
-      id: "4",
-      title: "Chemistry Basics",
-      teacher: "Dr. Michael Brown",
-      progress: 45,
-      completedSessions: 9,
-      totalSessions: 20,
-      status: "in_progress",
-      colorKey: "warning",
-    },
-  ];
+  useEffect(() => {
+    getCourseProgress().then(setCourses);
+  }, []);
 
-  const getColor = (colorKey: Course["colorKey"]) => {
+  // Assign colors based on course index
+  const colorKeys = ["primary", "secondary", "success", "warning"] as const;
+  
+  const getColor = (index: number) => {
+    const colorKey = colorKeys[index % colorKeys.length];
     return theme.palette[colorKey].main;
   };
 
@@ -78,7 +35,7 @@ export const CourseProgressWidget = ({ delay = 0 }: CourseProgressWidgetProps) =
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {courses.map((course, index) => {
-          const color = getColor(course.colorKey);
+          const color = getColor(index);
           return (
             <motion.div
               key={course.id}

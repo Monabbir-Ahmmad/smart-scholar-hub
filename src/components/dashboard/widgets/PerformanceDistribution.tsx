@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -12,17 +13,29 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { getPerformanceDistribution, type PerformanceDistributionData } from "@/services";
 
 export const PerformanceDistribution = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [rawData, setRawData] = useState<PerformanceDistributionData[]>([]);
 
-  const data = [
-    { range: "0-50%", count: 45, color: theme.palette.error.main },
-    { range: "51-70%", count: 120, color: theme.palette.warning.main },
-    { range: "71-85%", count: 280, color: theme.palette.primary.main },
-    { range: "86-95%", count: 185, color: theme.palette.success.main },
-    { range: "96-100%", count: 95, color: theme.palette.success.main },
-  ];
+  useEffect(() => {
+    getPerformanceDistribution().then(setRawData);
+  }, []);
+
+  const data = useMemo(() => {
+    const colorMap: Record<string, string> = {
+      "0-50%": theme.palette.error.main,
+      "51-70%": theme.palette.warning.main,
+      "71-85%": theme.palette.primary.main,
+      "86-95%": theme.palette.success.main,
+      "96-100%": theme.palette.success.main,
+    };
+    return rawData.map(item => ({
+      ...item,
+      color: colorMap[item.range] || theme.palette.grey[500],
+    }));
+  }, [rawData, theme]);
 
   const totalStudents = data.reduce((acc, item) => acc + item.count, 0);
   const avgPerformance = 78.5;

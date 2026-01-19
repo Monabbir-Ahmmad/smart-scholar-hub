@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from "react";
 import { useTheme, alpha } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
@@ -5,48 +6,21 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
 import { AlertTriangle, Clock, Send } from "lucide-react";
-
-const bills = [
-  { 
-    id: "INV-2024-001",
-    student: "Alex Johnson",
-    amount: 450,
-    dueDate: "2024-01-15",
-    status: "overdue",
-    daysOverdue: 12
-  },
-  { 
-    id: "INV-2024-002",
-    student: "Maria Garcia",
-    amount: 320,
-    dueDate: "2024-01-18",
-    status: "overdue",
-    daysOverdue: 9
-  },
-  { 
-    id: "INV-2024-003",
-    student: "James Wilson",
-    amount: 580,
-    dueDate: "2024-01-25",
-    status: "due_soon",
-    daysOverdue: 0
-  },
-  { 
-    id: "INV-2024-004",
-    student: "Sophie Chen",
-    amount: 275,
-    dueDate: "2024-01-28",
-    status: "due_soon",
-    daysOverdue: 0
-  },
-];
-
-const totalOverdue = bills
-  .filter(b => b.status === "overdue")
-  .reduce((acc, b) => acc + b.amount, 0);
+import { getUnpaidBills, type BillSummary } from "@/services";
 
 export const UnpaidBillsTable = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [bills, setBills] = useState<BillSummary[]>([]);
+
+  useEffect(() => {
+    getUnpaidBills().then(setBills);
+  }, []);
+
+  const totalOverdue = useMemo(() => {
+    return bills
+      .filter(b => b.status === "overdue")
+      .reduce((acc, b) => acc + b.amount, 0);
+  }, [bills]);
 
   return (
     <ChartCard

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
@@ -11,18 +12,15 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-
-const data = [
-  { month: "Jan", billed: 12500, paid: 11200 },
-  { month: "Feb", billed: 15800, paid: 14500 },
-  { month: "Mar", billed: 18200, paid: 16800 },
-  { month: "Apr", billed: 22400, paid: 20100 },
-  { month: "May", billed: 28600, paid: 25400 },
-  { month: "Jun", billed: 32800, paid: 29200 },
-];
+import { getRevenueData, type RevenueData } from "@/services";
 
 export const RevenueChart = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [data, setData] = useState<RevenueData[]>([]);
+
+  useEffect(() => {
+    getRevenueData().then(setData);
+  }, []);
 
   return (
     <ChartCard

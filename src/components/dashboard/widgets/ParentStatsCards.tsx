@@ -1,49 +1,59 @@
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTheme, alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Users, Calendar, TrendingUp, DollarSign } from "lucide-react";
-
-const stats = [
-  {
-    title: "Children",
-    value: "3",
-    subtitle: "Active enrollments",
-    icon: Users,
-    color: "#4CAF50",
-    change: null,
-  },
-  {
-    title: "Upcoming Sessions",
-    value: "12",
-    subtitle: "This week",
-    icon: Calendar,
-    color: "#2196F3",
-    change: "+3 from last week",
-    changeType: "positive",
-  },
-  {
-    title: "Average Score",
-    value: "86%",
-    subtitle: "All children",
-    icon: TrendingUp,
-    color: "#FF9800",
-    change: "+4% this month",
-    changeType: "positive",
-  },
-  {
-    title: "Outstanding",
-    value: "$950",
-    subtitle: "2 invoices pending",
-    icon: DollarSign,
-    color: "#f44336",
-    change: "Due this week",
-    changeType: "negative",
-  },
-];
+import { getParentStats, type ParentStats } from "@/services";
 
 export const ParentStatsCards = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [parentStats, setParentStats] = useState<ParentStats | null>(null);
+
+  useEffect(() => {
+    getParentStats().then(setParentStats);
+  }, []);
+
+  const stats = useMemo(() => {
+    if (!parentStats) return [];
+    return [
+      {
+        title: "Children",
+        value: parentStats.totalChildren.toString(),
+        subtitle: "Active enrollments",
+        icon: Users,
+        color: "#4CAF50",
+        change: null,
+      },
+      {
+        title: "Upcoming Sessions",
+        value: parentStats.upcomingSessions.toString(),
+        subtitle: "This week",
+        icon: Calendar,
+        color: "#2196F3",
+        change: "+3 from last week",
+        changeType: "positive" as const,
+      },
+      {
+        title: "Average Score",
+        value: `${parentStats.averageScore}%`,
+        subtitle: "All children",
+        icon: TrendingUp,
+        color: "#FF9800",
+        change: "+4% this month",
+        changeType: "positive" as const,
+      },
+      {
+        title: "Outstanding",
+        value: `$${parentStats.outstandingBalance}`,
+        subtitle: `${parentStats.pendingInvoices} invoices pending`,
+        icon: DollarSign,
+        color: "#f44336",
+        change: "Due this week",
+        changeType: "negative" as const,
+      },
+    ];
+  }, [parentStats]);
 
   return (
     <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 3 }}>

@@ -1,42 +1,52 @@
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTheme, alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Users, Calendar, TrendingUp, Clock } from "lucide-react";
-
-const stats = [
-  {
-    title: "Active Students",
-    value: "24",
-    change: "+3 this month",
-    icon: Users,
-    color: "primary" as const,
-  },
-  {
-    title: "Sessions This Month",
-    value: "48",
-    change: "8 remaining",
-    icon: Calendar,
-    color: "secondary" as const,
-  },
-  {
-    title: "Avg. Student Score",
-    value: "82.5%",
-    change: "+4.2% improvement",
-    icon: TrendingUp,
-    color: "success" as const,
-  },
-  {
-    title: "Teaching Hours",
-    value: "36h",
-    change: "This month",
-    icon: Clock,
-    color: "warning" as const,
-  },
-];
+import { getTeacherStats, type TeacherStats } from "@/services";
 
 export const TeacherStatsCards = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [teacherStats, setTeacherStats] = useState<TeacherStats | null>(null);
+
+  useEffect(() => {
+    getTeacherStats().then(setTeacherStats);
+  }, []);
+
+  const stats = useMemo(() => {
+    if (!teacherStats) return [];
+    return [
+      {
+        title: "Active Students",
+        value: teacherStats.activeStudents.toString(),
+        change: "+3 this month",
+        icon: Users,
+        color: "primary" as const,
+      },
+      {
+        title: "Sessions This Month",
+        value: teacherStats.sessionsThisMonth.toString(),
+        change: "8 remaining",
+        icon: Calendar,
+        color: "secondary" as const,
+      },
+      {
+        title: "Avg. Student Score",
+        value: `${teacherStats.averageStudentScore}%`,
+        change: "+4.2% improvement",
+        icon: TrendingUp,
+        color: "success" as const,
+      },
+      {
+        title: "Teaching Hours",
+        value: `${teacherStats.teachingHours}h`,
+        change: "This month",
+        icon: Clock,
+        color: "warning" as const,
+      },
+    ];
+  }, [teacherStats]);
 
   const getColor = (colorName: string) => {
     switch (colorName) {

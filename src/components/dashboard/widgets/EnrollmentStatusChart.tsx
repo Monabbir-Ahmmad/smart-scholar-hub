@@ -1,17 +1,31 @@
+import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { getEnrollmentStatusData, type EnrollmentStatusData } from "@/services";
 
 export const EnrollmentStatusChart = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [rawData, setRawData] = useState<EnrollmentStatusData[]>([]);
 
-  const data = [
-    { name: "Active", value: 245, color: theme.palette.success.main },
-    { name: "Pending", value: 85, color: theme.palette.warning.main },
-    { name: "Completed", value: 180, color: theme.palette.primary.main },
-    { name: "Cancelled", value: 32, color: theme.palette.error.main },
-  ];
+  useEffect(() => {
+    getEnrollmentStatusData().then(setRawData);
+  }, []);
+
+  // Map colors based on status name
+  const data = useMemo(() => {
+    const colorMap: Record<string, string> = {
+      "In Progress": theme.palette.success.main,
+      "Pending Approval": theme.palette.warning.main,
+      "Completed": theme.palette.primary.main,
+      "Cancelled": theme.palette.error.main,
+    };
+    return rawData.map(item => ({
+      ...item,
+      color: colorMap[item.name] || theme.palette.grey[500],
+    }));
+  }, [rawData, theme]);
 
   return (
     <ChartCard
