@@ -1,13 +1,16 @@
-import { motion } from "framer-motion";
 import { 
   BookOpen, 
   Calendar, 
   Award,
   TrendingUp,
   Clock,
-  Target
+  Target,
+  LayoutDashboard,
+  FileText,
+  Settings,
+  HelpCircle
 } from "lucide-react";
-import { StudentSidebar } from "@/components/dashboard/StudentSidebar";
+import { DashboardSidebar, MenuItem } from "@/components/dashboard/DashboardSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { CourseProgressWidget } from "@/components/dashboard/widgets/CourseProgressWidget";
@@ -17,6 +20,20 @@ import { UpcomingAssignments } from "@/components/dashboard/widgets/UpcomingAssi
 import { NextSessionCard } from "@/components/dashboard/widgets/NextSessionCard";
 import { AttendanceDonut } from "@/components/dashboard/widgets/AttendanceDonut";
 import { RecentResultsWidget } from "@/components/dashboard/widgets/RecentResultsWidget";
+
+const menuItems: MenuItem[] = [
+  { label: "Dashboard", icon: LayoutDashboard, path: "/student" },
+  { label: "My Courses", icon: BookOpen, path: "/student/courses" },
+  { label: "Assignments", icon: FileText, path: "/student/assignments" },
+  { label: "Schedule", icon: Calendar, path: "/student/schedule" },
+  { label: "Progress", icon: TrendingUp, path: "/student/progress" },
+  { label: "Achievements", icon: Award, path: "/student/achievements" },
+];
+
+const bottomItems: MenuItem[] = [
+  { label: "Settings", icon: Settings, path: "/student/settings" },
+  { label: "Help Center", icon: HelpCircle, path: "/student/help" },
+];
 
 const stats = [
   {
@@ -66,12 +83,18 @@ const stats = [
 const StudentDashboard = () => {
   return (
     <div className="min-h-screen bg-background">
-      <StudentSidebar />
+      <DashboardSidebar 
+        menuItems={menuItems}
+        bottomItems={bottomItems}
+        title="EduPlatform"
+      />
       
       <div className="ml-64 transition-all duration-300">
         <DashboardHeader 
           title="Welcome back, Alex!" 
           subtitle="Here's your learning progress for today."
+          userName="Alex"
+          userInitials="AL"
         />
         
         <main className="p-6 space-y-6">

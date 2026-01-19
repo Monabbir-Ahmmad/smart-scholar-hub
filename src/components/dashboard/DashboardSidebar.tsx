@@ -6,31 +6,32 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import {
-  LayoutDashboard,
-  Users,
   GraduationCap,
-  BookOpen,
-  FileQuestion,
-  Calendar,
-  CreditCard,
-  Settings,
   LogOut,
   ChevronLeft,
   ChevronRight,
+  LucideIcon,
 } from "lucide-react";
 
-const menuItems = [
-  { label: "Dashboard", icon: LayoutDashboard, path: "/admin" },
-  { label: "Users", icon: Users, path: "/admin/users" },
-  { label: "Enrollments", icon: GraduationCap, path: "/admin/enrollments" },
-  { label: "Courses", icon: BookOpen, path: "/admin/courses" },
-  { label: "Question Bank", icon: FileQuestion, path: "/admin/questions" },
-  { label: "Sessions", icon: Calendar, path: "/admin/sessions" },
-  { label: "Billing", icon: CreditCard, path: "/admin/billing" },
-  { label: "Settings", icon: Settings, path: "/admin/settings" },
-];
+export interface MenuItem {
+  label: string;
+  icon: LucideIcon;
+  path: string;
+}
 
-export const DashboardSidebar = () => {
+export interface DashboardSidebarProps {
+  menuItems: MenuItem[];
+  bottomItems?: MenuItem[];
+  title?: string;
+  homeRoute?: string;
+}
+
+export const DashboardSidebar = ({ 
+  menuItems, 
+  bottomItems = [],
+  title = "EduPlatform",
+  homeRoute = "/"
+}: DashboardSidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
   const theme = useTheme();
@@ -64,7 +65,7 @@ export const DashboardSidebar = () => {
           }}
         >
           {!collapsed && (
-            <Link to="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+            <Link to={homeRoute} style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
               <Box
                 sx={{
                   width: 32,
@@ -79,9 +80,25 @@ export const DashboardSidebar = () => {
                 <GraduationCap style={{ width: 20, height: 20, color: theme.palette.primary.contrastText }} />
               </Box>
               <Typography variant="subtitle1" sx={{ fontWeight: 700, color: "text.primary" }}>
-                EduPlatform
+                {title}
               </Typography>
             </Link>
+          )}
+          {collapsed && (
+            <Box
+              sx={{
+                width: 32,
+                height: 32,
+                borderRadius: 2,
+                bgcolor: "primary.main",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                mx: "auto",
+              }}
+            >
+              <GraduationCap style={{ width: 20, height: 20, color: theme.palette.primary.contrastText }} />
+            </Box>
           )}
           <IconButton
             onClick={() => setCollapsed(!collapsed)}
@@ -119,7 +136,7 @@ export const DashboardSidebar = () => {
                     bgcolor: isActive ? "primary.main" : "transparent",
                     color: isActive ? "primary.contrastText" : "text.secondary",
                     "&:hover": {
-                      bgcolor: isActive ? "primary.main" : theme.palette.muted,
+                      bgcolor: isActive ? "primary.main" : theme.palette.action.hover,
                       color: isActive ? "primary.contrastText" : "text.primary",
                     },
                   }}
@@ -136,8 +153,49 @@ export const DashboardSidebar = () => {
           })}
         </Box>
 
+        {/* Bottom Items */}
+        {bottomItems.length > 0 && (
+          <Box sx={{ p: 1.5, borderTop: `1px solid ${theme.palette.divider}` }}>
+            {bottomItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      px: 1.5,
+                      py: 1.25,
+                      borderRadius: 2,
+                      mb: 0.5,
+                      color: isActive ? "text.primary" : "text.secondary",
+                      transition: "all 0.2s",
+                      "&:hover": {
+                        bgcolor: theme.palette.action.hover,
+                        color: "text.primary",
+                      },
+                    }}
+                  >
+                    <item.icon style={{ width: 20, height: 20, flexShrink: 0 }} />
+                    {!collapsed && (
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {item.label}
+                      </Typography>
+                    )}
+                  </Box>
+                </Link>
+              );
+            })}
+          </Box>
+        )}
+
         {/* Logout */}
-        <Box sx={{ p: 1.5, borderTop: `1px solid ${theme.palette.divider}` }}>
+        <Box sx={{ p: 1.5, borderTop: bottomItems.length === 0 ? `1px solid ${theme.palette.divider}` : "none" }}>
           <Link to="/" style={{ textDecoration: "none" }}>
             <Box
               sx={{
@@ -150,7 +208,7 @@ export const DashboardSidebar = () => {
                 color: "text.secondary",
                 transition: "all 0.2s",
                 "&:hover": {
-                  bgcolor: theme.palette.muted,
+                  bgcolor: theme.palette.action.hover,
                   color: "text.primary",
                 },
               }}
