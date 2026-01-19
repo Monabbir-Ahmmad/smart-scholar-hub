@@ -30,7 +30,7 @@ import type {
  * // Sessions this month
  * const sessionsThisMonth = await EnrolledSession.countDocuments({
  *   teacher: teacherId,
- *   scheduledAt: { $gte: new Date(new Date().setDate(1)) }
+ *   scheduledAt: { $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) }
  * });
  * 
  * // Average student score
@@ -67,7 +67,7 @@ import type {
  *     $match: {
  *       teacher: teacherId,
  *       status: "completed",
- *       scheduledAt: { $gte: new Date(new Date().setDate(1)) }
+ *       scheduledAt: { $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) }
  *     }
  *   },
  *   {

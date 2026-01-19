@@ -17,9 +17,7 @@ export const UnpaidBillsTable = ({ delay = 0 }: { delay?: number }) => {
   }, []);
 
   const totalOverdue = useMemo(() => {
-    return bills
-      .filter(b => b.status === "overdue")
-      .reduce((acc, b) => acc + b.amount, 0);
+    return bills.reduce((acc, b) => b.status === "overdue" ? acc + b.amount : acc, 0);
   }, [bills]);
 
   return (

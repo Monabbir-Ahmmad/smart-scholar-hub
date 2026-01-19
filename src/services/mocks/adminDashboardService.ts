@@ -84,7 +84,7 @@ export async function getUserGrowthData(): Promise<UserGrowthData[]> {
  *       thisMonth: [
  *         {
  *           $match: {
- *             createdAt: { $gte: new Date(new Date().setDate(1)) }
+ *             createdAt: { $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) }
  *           }
  *         },
  *         { $count: "count" }
@@ -93,8 +93,8 @@ export async function getUserGrowthData(): Promise<UserGrowthData[]> {
  *         {
  *           $match: {
  *             createdAt: {
- *               $gte: new Date(new Date().setMonth(new Date().getMonth() - 1, 1)),
- *               $lt: new Date(new Date().setDate(1))
+ *               $gte: new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+ *               $lt: new Date(new Date().getFullYear(), new Date().getMonth(), 1)
  *             }
  *           }
  *         },
@@ -164,7 +164,7 @@ export async function getRevenueData(): Promise<RevenueData[]> {
  *   {
  *     $match: {
  *       label: "income",
- *       createdAt: { $gte: new Date(new Date().setDate(1)) }
+ *       createdAt: { $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) }
  *     }
  *   },
  *   {
@@ -541,7 +541,7 @@ export async function getPerformanceDistribution(): Promise<PerformanceDistribut
  *   {
  *     $match: {
  *       status: "completed",
- *       scheduledAt: { $gte: new Date(new Date().setDate(1)) }
+ *       scheduledAt: { $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) }
  *     }
  *   },
  *   {

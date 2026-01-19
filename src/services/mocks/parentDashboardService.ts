@@ -435,7 +435,9 @@ export async function getChildrenPerformanceComparison(parentId?: string): Promi
  *     ]);
  * 
  *     const attended = stats.find(s => s._id === "completed")?.count || 0;
- *     const missed = stats.find(s => s._id === "cancelled" || s._id === "skipped")?.count || 0;
+ *     const cancelled = stats.find(s => s._id === "cancelled")?.count || 0;
+ *     const skipped = stats.find(s => s._id === "skipped")?.count || 0;
+ *     const missed = cancelled + skipped;
  *     const rescheduled = stats.find(s => s._id === "rescheduled")?.count || 0;
  *     const total = attended + missed + rescheduled;
  * 
