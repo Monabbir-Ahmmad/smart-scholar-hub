@@ -15,6 +15,7 @@ const accountTypes = [
     illustration: illustrationParent,
     route: "/parent",
     gradient: "from-primary to-secondary",
+    animationDelay: 0,
   },
   {
     id: "tutor",
@@ -23,6 +24,7 @@ const accountTypes = [
     illustration: illustrationTutor,
     route: "/teacher",
     gradient: "from-secondary to-accent",
+    animationDelay: 0.1,
   },
   {
     id: "student",
@@ -31,8 +33,27 @@ const accountTypes = [
     illustration: illustrationStudent,
     route: "/student",
     gradient: "from-accent to-success",
+    animationDelay: 0.2,
   },
 ];
+
+const floatingAnimation = {
+  y: [0, -8, 0],
+  transition: {
+    duration: 3,
+    repeat: Infinity,
+    ease: "easeInOut" as const,
+  },
+};
+
+const pulseAnimation = {
+  scale: [1, 1.02, 1],
+  transition: {
+    duration: 2,
+    repeat: Infinity,
+    ease: "easeInOut" as const,
+  },
+};
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -119,16 +140,51 @@ const AccountTypeSelection = () => {
                     {/* Gradient overlay on hover */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${account.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
                     
-                    {/* Illustration */}
+                    {/* Animated Illustration */}
                     <motion.div
-                      className="w-full h-40 flex items-center justify-center mb-4 overflow-hidden rounded-xl bg-muted/30"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
+                      className="w-full h-44 flex items-center justify-center mb-4 overflow-hidden rounded-xl bg-gradient-to-br from-muted/40 to-muted/20 relative"
+                      animate={floatingAnimation}
+                      style={{ animationDelay: `${account.animationDelay}s` }}
                     >
-                      <img 
+                      {/* Animated background circles */}
+                      <motion.div
+                        className={`absolute w-24 h-24 rounded-full bg-gradient-to-br ${account.gradient} opacity-20 blur-xl`}
+                        animate={{
+                          scale: [1, 1.3, 1],
+                          opacity: [0.2, 0.3, 0.2],
+                        }}
+                        transition={{
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: account.animationDelay,
+                        }}
+                      />
+                      <motion.div
+                        className={`absolute w-16 h-16 rounded-full bg-gradient-to-br ${account.gradient} opacity-10 blur-lg`}
+                        animate={{
+                          x: [0, 10, -10, 0],
+                          y: [0, -10, 10, 0],
+                        }}
+                        transition={{
+                          duration: 5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: account.animationDelay + 0.5,
+                        }}
+                      />
+                      
+                      {/* Main illustration with animation */}
+                      <motion.img 
                         src={account.illustration} 
                         alt={account.title}
-                        className="w-36 h-36 object-contain"
+                        className="w-36 h-36 object-contain relative z-10 drop-shadow-lg"
+                        animate={pulseAnimation}
+                        whileHover={{ 
+                          scale: 1.1,
+                          rotate: [0, -3, 3, 0],
+                          transition: { duration: 0.5 }
+                        }}
                       />
                     </motion.div>
 
