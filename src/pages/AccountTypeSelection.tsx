@@ -1,16 +1,18 @@
 import { Box, Typography, Container } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { motion } from "framer-motion";
-import { Users, GraduationCap, UserCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { theme } from "@/theme/muiTheme";
+import illustrationParent from "@/assets/illustration-parent.png";
+import illustrationTutor from "@/assets/illustration-tutor.png";
+import illustrationStudent from "@/assets/illustration-student.png";
 
 const accountTypes = [
   {
     id: "parent",
     title: "Parent",
     description: "Manage your family's schedule",
-    icon: Users,
+    illustration: illustrationParent,
     route: "/parent",
     gradient: "from-primary to-secondary",
   },
@@ -18,7 +20,7 @@ const accountTypes = [
     id: "tutor",
     title: "Tutor",
     description: "Connect with students",
-    icon: GraduationCap,
+    illustration: illustrationTutor,
     route: "/teacher",
     gradient: "from-secondary to-accent",
   },
@@ -26,7 +28,7 @@ const accountTypes = [
     id: "student",
     title: "Student",
     description: "Join solo as a student",
-    icon: UserCircle,
+    illustration: illustrationStudent,
     route: "/student",
     gradient: "from-accent to-success",
   },
@@ -97,10 +99,9 @@ const AccountTypeSelection = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
           >
             {accountTypes.map((account) => {
-              const IconComponent = account.icon;
               return (
                 <motion.div
                   key={account.id}
@@ -108,23 +109,27 @@ const AccountTypeSelection = () => {
                   whileHover={{ 
                     scale: 1.05, 
                     y: -8,
-                    transition: { type: "spring", stiffness: 300, damping: 20 }
+                    transition: { type: "spring" as const, stiffness: 300, damping: 20 }
                   }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => navigate(account.route)}
                   className="cursor-pointer group"
                 >
-                  <div className="relative bg-card rounded-2xl p-8 border border-border shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <div className="relative bg-card rounded-2xl p-6 border border-border shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
                     {/* Gradient overlay on hover */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${account.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
                     
-                    {/* Icon container */}
+                    {/* Illustration */}
                     <motion.div
-                      className={`w-16 h-16 rounded-xl bg-gradient-to-br ${account.gradient} flex items-center justify-center mb-6 mx-auto shadow-lg`}
-                      whileHover={{ rotate: [0, -10, 10, 0] }}
-                      transition={{ duration: 0.5 }}
+                      className="w-full h-40 flex items-center justify-center mb-4 overflow-hidden rounded-xl bg-muted/30"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
                     >
-                      <IconComponent className="w-8 h-8 text-primary-foreground" />
+                      <img 
+                        src={account.illustration} 
+                        alt={account.title}
+                        className="w-36 h-36 object-contain"
+                      />
                     </motion.div>
 
                     {/* Content */}
