@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from "react";
 import { useTheme, alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -13,25 +14,7 @@ import {
 } from "recharts";
 import { ChartCard } from "../ChartCard";
 import { TrendingUp, TrendingDown } from "lucide-react";
-
-const performanceData = [
-  { week: "W1", score: 72, average: 68 },
-  { week: "W2", score: 68, average: 69 },
-  { week: "W3", score: 75, average: 70 },
-  { week: "W4", score: 78, average: 71 },
-  { week: "W5", score: 82, average: 72 },
-  { week: "W6", score: 79, average: 72 },
-  { week: "W7", score: 85, average: 73 },
-  { week: "W8", score: 88, average: 74 },
-  { week: "W9", score: 84, average: 74 },
-  { week: "W10", score: 91, average: 75 },
-  { week: "W11", score: 89, average: 76 },
-  { week: "W12", score: 94, average: 77 },
-];
-
-const currentScore = performanceData[performanceData.length - 1].score;
-const previousScore = performanceData[performanceData.length - 2].score;
-const improvement = currentScore - previousScore;
+import { getPerformanceTrend, type PerformanceTrendData } from "@/services";
 
 interface PerformanceTrendChartProps {
   delay?: number;
@@ -39,6 +22,20 @@ interface PerformanceTrendChartProps {
 
 export const PerformanceTrendChart = ({ delay = 0 }: PerformanceTrendChartProps) => {
   const theme = useTheme();
+  const [performanceData, setPerformanceData] = useState<PerformanceTrendData[]>([]);
+
+  useEffect(() => {
+    getPerformanceTrend().then(setPerformanceData);
+  }, []);
+
+  const { currentScore, improvement } = useMemo(() => {
+    if (performanceData.length < 2) {
+      return { currentScore: 0, improvement: 0 };
+    }
+    const current = performanceData[performanceData.length - 1].score;
+    const previous = performanceData[performanceData.length - 2].score;
+    return { currentScore: current, improvement: current - previous };
+  }, [performanceData]);
 
   return (
     <ChartCard

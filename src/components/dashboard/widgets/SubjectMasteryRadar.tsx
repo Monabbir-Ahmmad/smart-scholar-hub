@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTheme, alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -13,27 +14,7 @@ import {
 } from "recharts";
 import { ChartCard } from "../ChartCard";
 import { Target, Star } from "lucide-react";
-
-const masteryData = [
-  { subject: "Mathematics", score: 85, fullMark: 100 },
-  { subject: "Physics", score: 72, fullMark: 100 },
-  { subject: "Chemistry", score: 68, fullMark: 100 },
-  { subject: "English", score: 90, fullMark: 100 },
-  { subject: "Biology", score: 78, fullMark: 100 },
-  { subject: "History", score: 82, fullMark: 100 },
-];
-
-const averageScore = Math.round(
-  masteryData.reduce((sum, item) => sum + item.score, 0) / masteryData.length
-);
-
-const strongestSubject = masteryData.reduce((prev, current) => 
-  prev.score > current.score ? prev : current
-);
-
-const weakestSubject = masteryData.reduce((prev, current) => 
-  prev.score < current.score ? prev : current
-);
+import { getSubjectMastery, type SubjectMasteryData } from "@/services";
 
 interface SubjectMasteryRadarProps {
   delay?: number;
@@ -41,6 +22,31 @@ interface SubjectMasteryRadarProps {
 
 export const SubjectMasteryRadar = ({ delay = 0 }: SubjectMasteryRadarProps) => {
   const theme = useTheme();
+  const [masteryData, setMasteryData] = useState<SubjectMasteryData[]>([]);
+
+  useEffect(() => {
+    getSubjectMastery().then(setMasteryData);
+  }, []);
+
+  const { averageScore, strongestSubject, weakestSubject } = useMemo(() => {
+    if (masteryData.length === 0) {
+      return {
+        averageScore: 0,
+        strongestSubject: { subject: "N/A", score: 0 },
+        weakestSubject: { subject: "N/A", score: 0 },
+      };
+    }
+    const avg = Math.round(
+      masteryData.reduce((sum, item) => sum + item.score, 0) / masteryData.length
+    );
+    const strongest = masteryData.reduce((prev, current) =>
+      prev.score > current.score ? prev : current
+    );
+    const weakest = masteryData.reduce((prev, current) =>
+      prev.score < current.score ? prev : current
+    );
+    return { averageScore: avg, strongestSubject: strongest, weakestSubject: weakest };
+  }, [masteryData]);
 
   return (
     <ChartCard

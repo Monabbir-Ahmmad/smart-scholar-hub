@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import { ChartCard } from "../ChartCard";
@@ -10,18 +11,15 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
-const data = [
-  { month: "Jan", students: 120, teachers: 15, parents: 80 },
-  { month: "Feb", students: 180, teachers: 22, parents: 120 },
-  { month: "Mar", students: 250, teachers: 28, parents: 165 },
-  { month: "Apr", students: 320, teachers: 35, parents: 210 },
-  { month: "May", students: 410, teachers: 42, parents: 275 },
-  { month: "Jun", students: 520, teachers: 48, parents: 340 },
-];
+import { getUserGrowthData, type UserGrowthData } from "@/services";
 
 export const UserGrowthChart = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [data, setData] = useState<UserGrowthData[]>([]);
+
+  useEffect(() => {
+    getUserGrowthData().then(setData);
+  }, []);
 
   return (
     <ChartCard

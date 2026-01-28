@@ -1,3 +1,4 @@
+import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
@@ -13,27 +14,43 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
+import { getQuestionBankStats, type QuestionBankStats as QuestionBankStatsType } from "@/services";
 
 export const QuestionBankStats = ({ delay = 0 }: { delay?: number }) => {
   const theme = useTheme();
+  const [stats, setStats] = useState<QuestionBankStatsType | null>(null);
 
-  const subjectData = [
-    { subject: "Math", questions: 850, sets: 42, color: theme.palette.primary.main },
-    { subject: "Physics", questions: 620, sets: 35, color: theme.palette.secondary.main },
-    { subject: "Chemistry", questions: 540, sets: 28, color: theme.palette.success.main },
-    { subject: "Biology", questions: 480, sets: 25, color: theme.palette.warning.main },
-    { subject: "English", questions: 390, sets: 22, color: theme.palette.primary.main },
-    { subject: "History", questions: 280, sets: 18, color: theme.palette.secondary.main },
-  ];
+  useEffect(() => {
+    getQuestionBankStats().then(setStats);
+  }, []);
 
-  const difficultyBreakdown = [
-    { level: "Easy", count: 1240, color: theme.palette.success.main },
-    { level: "Medium", count: 1580, color: theme.palette.warning.main },
-    { level: "Hard", count: 820, color: theme.palette.error.main },
-  ];
+  const subjectData = useMemo(() => {
+    if (!stats) return [];
+    const colorMap = [
+      theme.palette.primary.main,
+      theme.palette.secondary.main,
+      theme.palette.success.main,
+      theme.palette.warning.main,
+      theme.palette.primary.main,
+      theme.palette.secondary.main,
+    ];
+    return stats.bySubject.map((item, index) => ({
+      ...item,
+      color: colorMap[index % colorMap.length],
+    }));
+  }, [stats, theme]);
 
-  const totalQuestions = subjectData.reduce((acc, item) => acc + item.questions, 0);
-  const totalSets = subjectData.reduce((acc, item) => acc + item.sets, 0);
+  const difficultyBreakdown = useMemo(() => {
+    if (!stats) return [];
+    return [
+      { level: "Easy", count: stats.byDifficulty.find(d => d.level === "Easy")?.count || 0, color: theme.palette.success.main },
+      { level: "Medium", count: stats.byDifficulty.find(d => d.level === "Medium")?.count || 0, color: theme.palette.warning.main },
+      { level: "Hard", count: stats.byDifficulty.find(d => d.level === "Hard")?.count || 0, color: theme.palette.error.main },
+    ];
+  }, [stats, theme]);
+
+  const totalQuestions = stats?.totalQuestions || 0;
+  const totalSets = stats?.totalSets || 0;
 
   return (
     <ChartCard

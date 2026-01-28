@@ -1,9 +1,11 @@
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { ChartCard } from "../ChartCard";
+import { getAttendanceStats, type AttendanceStats } from "@/services";
 
 interface AttendanceDonutProps {
   delay?: number;
@@ -11,15 +13,23 @@ interface AttendanceDonutProps {
 
 export const AttendanceDonut = ({ delay = 0 }: AttendanceDonutProps) => {
   const theme = useTheme();
+  const [stats, setStats] = useState<AttendanceStats | null>(null);
 
-  const attendanceData = [
-    { name: "Attended", value: 42, color: theme.palette.success.main },
-    { name: "Missed", value: 3, color: theme.palette.error.main },
-    { name: "Rescheduled", value: 5, color: theme.palette.warning.main },
-  ];
+  useEffect(() => {
+    getAttendanceStats().then(setStats);
+  }, []);
 
-  const totalSessions = attendanceData.reduce((sum, item) => sum + item.value, 0);
-  const attendanceRate = Math.round((attendanceData[0].value / totalSessions) * 100);
+  const attendanceData = useMemo(() => {
+    if (!stats) return [];
+    return [
+      { name: "Attended", value: stats.attended, color: theme.palette.success.main },
+      { name: "Missed", value: stats.missed, color: theme.palette.error.main },
+      { name: "Rescheduled", value: stats.rescheduled, color: theme.palette.warning.main },
+    ];
+  }, [stats, theme]);
+
+  const totalSessions = stats?.totalSessions || 0;
+  const attendanceRate = stats?.attendanceRate || 0;
 
   return (
     <ChartCard
